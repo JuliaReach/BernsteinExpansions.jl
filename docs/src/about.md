@@ -47,6 +47,25 @@ layout. To build the docs, run `make.jl`:
 $ julia --color=yes docs/make.jl
 ```
 
+## Running the benchmarks
+
+This package contains a suite of benchmarks that is handled through
+[PkgBenchmark](https://github.com/JuliaCI/PkgBenchmark.jl). To run the benchmarks,
+execute the following commands in Julia's REPL:
+
+```julia
+julia> using BernsteinExpansions, PkgBenchmark
+julia> benchmarkpkg("BernsteinExpansions")
+```
+
+To save the results to a custom directory, use:
+
+```julia
+julia> benchmarkpkg("BernsteinExpansions", resultsdir="/Users/forets/Projects")
+```
+
+For further options see the inline help of `benchmarkpkg`.
+
 ## Credits
 
 These persons have contributed to `BernsteinExpansions.jl` (in alphabetic order):
