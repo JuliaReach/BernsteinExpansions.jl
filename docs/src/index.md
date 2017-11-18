@@ -16,7 +16,8 @@ Depth = 2
 
 ```@contents
 Pages = [
-    "lib/implicit_bernstein_form.md"
+    "lib/implicit_bernstein_form.md",
+    "lib/tensorial_bernstein_form.md"
 ]
 Depth = 2
 ```

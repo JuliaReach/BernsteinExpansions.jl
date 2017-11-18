@@ -1,3 +1,16 @@
+"""
+    generate_tensor_form(implicitform::ImplicitForm{T})::Vector{T} where{T<:Number}
+
+Compute the Bernstein expansion in tensorial form given its implicit form.
+
+### Input
+
+- `implicitform` -- Bernstein expansion in implicit form
+
+### Algorithm
+
+This implementation uses Julia's Kronecker product `kron` function.
+"""
 function generate_tensor_form(implicitform::ImplicitForm{T})::Vector{T} where{T<:Number}
     berncoeffs = implicitform.array[1]
     for i in 2:implicitform.dimension

@@ -10,7 +10,8 @@ makedocs(
         "Manual" => Any[
         "Bernstein expansion" => "man/bernstein_expansion.md"],
         "Library" => Any[
-        "Implicit Bernstein form" => "lib/implicit_bernstein_form.md"],
+        "Implicit Bernstein form" => "lib/implicit_bernstein_form.md",
+        "Tensorial Bernstein form" => "lib/tensorial_bernstein_form.md"],
         "About" => "about.md"
     ]
 )
