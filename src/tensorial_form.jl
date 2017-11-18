@@ -20,7 +20,7 @@ function generate_tensor_form(implicitform::ImplicitForm{T})::Vector{T} where{T<
 end
 
 """
-    tensor_multivariate(k::Vector{Int64}, l::Vector{Int64},
+    multivariate_tensor(k::Vector{Int64}, l::Vector{Int64},
                           low::Vector{T}, high::Vector{T})::Vector{T} where {T<:Number}
 
 Compute the Bernstein coefficients of a multivariate monomial in the tensor form.
@@ -36,8 +36,8 @@ Compute the Bernstein coefficients of a multivariate monomial in the tensor form
 
 This implementation uses Julia's Kronecker product `kron` function.
 """
-function tensor_multivariate(k::Vector{Int64}, l::Vector{Int64},
-                            low::Vector{T}, high::Vector{T})::Vector{T} where {T<:Number}
+function multivariate_tensor(k::Vector{Int64}, l::Vector{Int64},
+                             low::Vector{T}, high::Vector{T})::Vector{T} where {T<:Number}
 
     n = length(low)
     berncoeffs  = univariate(k[1], l[1], low[1], high[1])

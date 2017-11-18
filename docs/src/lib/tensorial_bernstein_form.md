@@ -21,5 +21,5 @@ generate_tensor_form
 ## Multivariate monomials
 
 ```@docs
-tensor_multivariate
+multivariate_tensor
 ```

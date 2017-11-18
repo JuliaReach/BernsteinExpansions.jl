@@ -7,11 +7,11 @@ module BernsteinExpansions
 
 #using RecursiveArrayTools, TensorOperations
 
-export univariate,
-       multivariate,
+export generate_tensor_form,
        ImplicitForm,
-       generate_tensor_form,
-       tensor_multivariate
+       univariate,
+       multivariate,
+       multivariate_tensor
 
 include("implicit_form.jl")
 include("tensorial_form.jl")
