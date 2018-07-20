@@ -12,11 +12,18 @@ end
 
     low = [1//1,1//1,1//1,1//1,1//1,1//1,1//1,1//1]
     high = [2//1,2//1,2//1,2//1,2//1,2//1,2//1,2//1]
-    @bench "Rational multivariate expansion" multivariate(k, l, low, high)
+    @bench "Rational multivariate expansion" multivariate($k, $l, $low, $high)
 
     low = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
     high = [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0]
-    @bench "Float64 multivariate expansion" multivariate(k, l, low, high)
+    @bench "Float64 multivariate expansion" multivariate($k, $l, $low, $high)
+
+    m = multivariate([5,5,5,5,5,5,5,5],[10,10,10,10,10,10,10,10],
+                     [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],
+                     [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0]);
+
+    @bench "Float64 multivariate expansion" generate_tensor_form($m)                 
+
 end
 
 #=
