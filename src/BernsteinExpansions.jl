@@ -8,7 +8,6 @@ module BernsteinExpansions
 #using RecursiveArrayTools, TensorOperations
 
 export generate_tensor_form,
-       generate_tensor_form_improved,
        ImplicitForm,
        univariate,
        multivariate,
