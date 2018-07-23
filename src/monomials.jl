@@ -95,7 +95,7 @@ function multivariate(k::Vector{Int64}, l::Vector{Int64},
     ncoeffs = 1
     B = Vector{Vector{N}}(n)
     @inbounds for i in 1:n
-        B[i] = univariate(k[i], l[i], low[i], high[i])
+        @views B[i] = univariate(k[i], l[i], low[i], high[i])
         ncoeffs = ncoeffs * length(B[i])
     end
     return ImplicitForm(B, n, ncoeffs)
