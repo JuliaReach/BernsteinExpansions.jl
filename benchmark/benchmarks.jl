@@ -14,6 +14,7 @@ low = [1//1,1//1,1//1,1//1,1//1,1//1,1//1,1//1]
 high = [2//1,2//1,2//1,2//1,2//1,2//1,2//1,2//1]
 SMulti["Rational multivariate expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
 
+
 low = convert(Vector{Float64}, low)
 high = convert(Vector{Float64}, high)
 SMulti["Float64 multivariate expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
