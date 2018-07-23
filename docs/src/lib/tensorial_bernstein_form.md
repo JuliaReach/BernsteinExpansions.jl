@@ -16,6 +16,8 @@ CurrentModule = BernsteinExpansions
 
 ```@docs
 generate_tensor_form
+_kron_tensor!
+_loop_tensor!
 ```
 
 ## Multivariate monomials
