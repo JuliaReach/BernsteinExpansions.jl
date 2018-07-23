@@ -1,6 +1,7 @@
 using Documenter, BernsteinExpansions
 
 makedocs(
+    doctest = true,  # use this flag to skip doctests (saves time!)
     modules = [BernsteinExpansions],
     format = :html,
     assets = ["assets/juliareach.css"],
@@ -8,7 +9,8 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
-        "Bernstein expansion" => "man/bernstein_expansion.md"],
+        "Bernstein expansion" => "man/bernstein_expansion.md",
+        "Benchmarks" => "man/benchmarks.md"],
         "Library" => Any[
         "Implicit Bernstein form" => "lib/implicit_bernstein_form.md",
         "Tensorial Bernstein form" => "lib/tensorial_bernstein_form.md"],
@@ -21,6 +23,6 @@ deploydocs(
     target = "build",
     osname = "linux",
     julia  = "0.6",
-    deps = Deps.pip("mkdocs", "python-markdown-math"),
+    deps = nothing,
     make = nothing
 )
