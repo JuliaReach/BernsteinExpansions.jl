@@ -4,6 +4,6 @@
 deps/deps.jl
 *.svg
 *.DS_Store
-
+*~
 docs/build/
 docs/site/
