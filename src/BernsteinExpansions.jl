@@ -1,17 +1,11 @@
 __precompile__(true)
-"""
-`BersteinExpansions.jl` is a Julia package to compute Bernstein coefficients
-of multivariate polynomials.
-"""
 module BernsteinExpansions
 
-#using RecursiveArrayTools, TensorOperations
+using RecursiveArrayTools
 
-export generate_tensor_form,
-       ImplicitForm,
+export ImplicitForm,
        univariate,
-       multivariate,
-       multivariate_tensor
+       multivariate
 
 include("implicit_form.jl")
 include("tensorial_form.jl")

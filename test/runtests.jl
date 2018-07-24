@@ -21,13 +21,16 @@ m = multivariate([5,5,5,5,5,5,5,5],[10,10,10,10,10,10,10,10],
                  [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],
                  [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0]);
 @time @testset "Multivariate monomial, float input, implicit form" begin
-@test generate_tensor_form(m) == multivariate_tensor([5,5,5,5,5,5,5,5],
+
+# test loop (default) algorithm
+@test generate_tensor_form(m, algorithm="loop") == multivariate_tensor([5,5,5,5,5,5,5,5],
                                                      [10,10,10,10,10,10,10,10],
                                                      [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],
-                                                     [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0])
+                                                     [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0], algorithm="loop")
+
+# test kron algorithm
+@test generate_tensor_form(m, algorithm="kron") == multivariate_tensor([5,5,5,5,5,5,5,5],
+                                                                       [10,10,10,10,10,10,10,10],
+                                                                       [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],
+                                                                       [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0], algorithm="kron")
 end
-
-
-# random timing test
-# d = rand(3:6,10); l = [maximum(d) for i in 1:10];lb = [d[i]/maximum(d) for i in 1:10];ub = [1.0 for i in 1:10]
-# @time multivariate_tensor(d,l,lb,ub)
