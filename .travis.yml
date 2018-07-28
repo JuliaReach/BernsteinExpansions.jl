@@ -3,17 +3,16 @@ language: julia
 os:
   - linux
 julia:
-  - 0.6
+  - 0.6.0
+  - 0.6.2
+  - 0.6.4
   - nightly
 notifications:
   email: false
 git:
   depth: 99999999
 
-# dependencies that are not in METADATA
-
-## uncomment the following lines to allow failures on nightly julia
-## (tests will run but not make your overall status red)
+## allow failures (tests will run but not make your overall status red)
 matrix:
   allow_failures:
     - julia: nightly
@@ -27,11 +26,9 @@ matrix:
 
 ## uncomment the following lines to override the default test script
 #script:
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("BernsteinExpansions"); Pkg.test("BernsteinExpansions"; coverage=true)'
+#  - julia -e 'Pkg.clone(pwd()); Pkg.build("LazySets"); Pkg.test("LazySets"; coverage=true)'
 after_success:
-  - julia -e 'Pkg.add("Documenter")'
+  - julia -e 'Pkg.add("Documenter"); Pkg.add("GR"); Pkg.add("IntervalArithmetic")'
   - julia -e 'cd(Pkg.dir("BernsteinExpansions")); include(joinpath("docs", "make.jl"))'
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("BernsteinExpansions")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("BernsteinExpansions")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'Pkg.add("Coverage")'
+  - julia -e 'cd(Pkg.dir("BernsteinExpansions")); using Coverage; Codecov.submit(Codecov.process_folder())'
