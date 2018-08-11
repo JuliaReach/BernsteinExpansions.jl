@@ -117,15 +117,18 @@ A multi-dimensional array containing the coefficients.
 
 This implementation uses Julia's `Base.Cartesian` to generate a set of nested
 loops to compute the element ``A[i_1, …, i_n]``.
+
+### TODO
+
+Correct output ordering in multi-array mode, incorrect 1D array mode.
 """
-#FIXME: Correct output ordering in multi-array mode, incorrect 1D array mode.
 @generated function _loop_tensor!(A::AbstractArray{T, N}, v::VectorOfArray) where {T, N}
     quote
         @inbounds for $(Symbol(:i_, N)) in eachindex(v[$N])
                   @nloops $(N-1) i i -> eachindex(v[i]) d -> d == 1 ?
                             nothing :
                             d == $N-1 ?
-                                    t_{d-1} = v[i_{d}, d] * v[i_{d+1}, d+1]:
+                                    t_{d-1} = v[i_{d}, d] * v[i_{d+1}, d+1] :
                                     t_{d-1} = t_{d} * v[i_{d}, d] begin
                                         if $N==2
                                             (@nref $N A i) = v[i_1, 1] * v[i_2, 2]
