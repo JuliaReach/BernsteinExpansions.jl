@@ -1,6 +1,9 @@
 __precompile__(true)
 module BernsteinExpansions
 
+using Compat
+import Compat.String
+
 using RecursiveArrayTools
 
 export ImplicitForm,

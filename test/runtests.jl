@@ -1,5 +1,4 @@
-using BernsteinExpansions
-using Base.Test
+using BernsteinExpansions, Compat.Test
 
 @time @testset "Univariate monomial, floating point input" begin
 @test univariate(3, 3, 1.0, 2.0) == [1.0, 2.0, 4.0, 8.0]

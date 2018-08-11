@@ -32,7 +32,7 @@ end
 function generate_tensor_form(v::VectorOfArray{N, D, T}; algorithm::String="loop") where {N, D, T}
     if algorithm == "loop"
         # preallocate output array
-        A = Array{N, length(v)}(Tuple(length(vi) for vi in v))
+        A = Array{N, length(v)}(undef, Tuple(length(vi) for vi in v))
         _loop_tensor!(A, v)
     elseif algorithm == "kron"
         # preallocate output array
