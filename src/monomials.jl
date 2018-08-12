@@ -64,7 +64,7 @@ end
 
 """
     multivariate(k::Vector{Int64}, l::Vector{Int64},
-                          low::Vector{N}, high::Vector{N})::ImplicitForm{N} where {N<:Number}
+                          low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
 
 Compute the Bernstein coefficients of a multivariate monomial.
 
@@ -90,13 +90,13 @@ julia> m.array
 ```
 """
 function multivariate(k::Vector{Int64}, l::Vector{Int64},
-                      low::Vector{N}, high::Vector{N})::ImplicitForm{N} where {N<:Number}
+                      low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
     n = length(low)
     ncoeffs = 1
-    B = Vector{Vector{N}}(n)
+    B = Vector{Vector{N}}(undef, n)
     @inbounds for i in 1:n
         @views B[i] = univariate(k[i], l[i], low[i], high[i])
         ncoeffs = ncoeffs * length(B[i])
     end
-    return ImplicitForm(B, n, ncoeffs)
+    return ImplicitBernsteinForm(B, n, ncoeffs)
 end

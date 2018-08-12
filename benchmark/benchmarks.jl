@@ -12,8 +12,14 @@ l = [5,5,5,5,5,5,5,5]
 
 low = [1//1,1//1,1//1,1//1,1//1,1//1,1//1,1//1]
 high = [2//1,2//1,2//1,2//1,2//1,2//1,2//1,2//1]
-SMulti["Rational multivariate expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
+m = multivariate(k, l, low, high)
+SMulti["Rational multivariate implicit expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
+SMulti["Rational multivariate full expansion (tensor algorithm)"] = @benchmarkable generate_tensor_form($m, algorithm="tensor_generated")
+SMulti["Rational multivariate full expansion (kron algorithm)"] = @benchmarkable generate_tensor_form($m, algorithm="linear_kron")
 
 low = convert(Vector{Float64}, low)
 high = convert(Vector{Float64}, high)
-SMulti["Float64 multivariate expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
+m = multivariate(k, l, low, high)
+SMulti["Float64 multivariate implicit expansion"] = @benchmarkable multivariate($k, $l, $low, $high)
+SMulti["Float64 multivariate full expansion (tensor algorithm)"] = @benchmarkable generate_tensor_form($m, algorithm="tensor_generated")
+SMulti["Float64 multivariate full expansion (kron algorithm)"] = @benchmarkable generate_tensor_form($m, algorithm="linear_kron")
