@@ -6,7 +6,7 @@ import Compat.String
 
 using RecursiveArrayTools
 
-export ImplicitForm,
+export ImplicitBernsteinForm,
        univariate,
        multivariate
 
