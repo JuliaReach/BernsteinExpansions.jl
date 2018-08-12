@@ -15,7 +15,7 @@ CurrentModule = BernsteinExpansions
 ## Implicit Form
 
 ```@docs
-ImplicitForm
+ImplicitBernsteinForm
 ```
 
 ## Univariate monomials
