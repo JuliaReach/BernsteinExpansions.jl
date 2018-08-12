@@ -24,9 +24,9 @@ m = multivariate(k, l, low, high);
 #FIXME: Look how to explore multi-dim array in correct fashion
 m_reverse = multivariate(reverse(k), reverse(l), reverse(low), reverse(high));
 @time @testset "2D Multivariate monomial, float input, full expansion" begin
-# test nested loop (default) algorithm
-@test generate_tensor_form(m, algorithm="kron") == sol
-@test vcat(generate_tensor_form(m_reverse, algorithm="loop")...) == sol
+# test nested tensor (default) algorithm
+@test generate_tensor_form(m, algorithm="linear_kron") == sol
+@test vcat(generate_tensor_form(m_reverse, algorithm="tensor_generated")...) == sol
 end
 
 k = [3,2,4];
@@ -39,8 +39,8 @@ m_reverse = multivariate(reverse(k), reverse(l), reverse(low), reverse(high));
 #= (temp - travis CI)
 # Iterative kron algorithm assumed as correct answer
 @time @testset "Coherency test -- Multivariate monomial, float input, full expansion" begin
-# test nested loop (default) algorithm
-@test generate_tensor_form(m, algorithm="kron") == vcat(generate_tensor_form(m_reverse, algorithm="loop")...);
+# test nested tensor (default) algorithm
+@test generate_tensor_form(m, algorithm="kron") == vcat(generate_tensor_form(m_reverse, algorithm="tensor")...);
 end
 
 m = multivariate([5,5,5,5,5,5,5,5],[10,10,10,10,10,10,10,10],
@@ -48,11 +48,11 @@ m = multivariate([5,5,5,5,5,5,5,5],[10,10,10,10,10,10,10,10],
                  [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0]);
 @time @testset "Multivariate monomial, float input, implicit form" begin
 
-# test loop (default) algorithm
-@test generate_tensor_form(m, algorithm="loop") == multivariate_tensor([5,5,5,5,5,5,5,5],
+# test tensor (default) algorithm
+@test generate_tensor_form(m, algorithm="tensor") == multivariate_tensor([5,5,5,5,5,5,5,5],
                                                      [10,10,10,10,10,10,10,10],
                                                      [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],
-                                                     [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0], algorithm="loop")
+                                                     [2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0], algorithm="tensor")
 
 # test kron algorithm
 @test generate_tensor_form(m, algorithm="kron") == multivariate_tensor([5,5,5,5,5,5,5,5],
