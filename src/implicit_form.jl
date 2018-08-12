@@ -7,7 +7,7 @@ It is parametric in the numeric type `N`.
 abstract type AbstractBernsteinForm{N} end
 
 """
-    ImplicitBernsteinForm{T<:Number}
+    ImplicitBernsteinForm{T, N} <: AbstractBernsteinForm{N}
 
 Type defining an implicit Bernstein form.
 
