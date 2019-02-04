@@ -78,8 +78,8 @@ a generated function in a nested loop.
 
 ### Input
 
-- `A` --
-- `v` --
+- `A` -- array
+- `v` -- vector of array
 
 ### Output
 
@@ -89,12 +89,9 @@ A multi-dimensional array containing the coefficients.
 
 This implementation uses Julia's `Base.Cartesian` to generate a set of nested
 loops to compute the element ``A[i_1, …, i_n]``.
-
-### TODO
-
-Correct output ordering in multi-array mode, incorrect 1D array mode.
 """
 @generated function _tensor_generated!(A::AbstractArray{T, N}, v::VectorOfArray) where {T, N}
+    # TODO: Correct output ordering in multi-array mode, incorrect 1D array mode.
     quote
         @inbounds for $(Symbol(:i_, N)) in eachindex(v[$N])
                   @nloops $(N-1) i i -> eachindex(v[i]) d -> d == 1 ?

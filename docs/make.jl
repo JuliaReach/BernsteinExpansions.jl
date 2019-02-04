@@ -3,7 +3,7 @@ using Documenter, BernsteinExpansions
 makedocs(
     doctest = true,  # use this flag to skip doctests (saves time!)
     modules = [BernsteinExpansions],
-    format = :html,
+    format = Documenter.HTML(),
     assets = ["assets/juliareach.css"],
     sitename = "BernsteinExpansions.jl",
     pages = [
@@ -12,8 +12,8 @@ makedocs(
         "Bernstein expansion" => "man/bernstein_expansion.md",
         "Benchmarks" => "man/benchmarks.md"],
         "Library" => Any[
-        "Implicit Bernstein form" => "lib/implicit_bernstein_form.md",
-        "Tensorial Bernstein form" => "lib/tensorial_bernstein_form.md"],
+        "Types" => "lib/types.md",
+        "Methods" => "lib/methods.md"],
         "About" => "about.md"
     ]
 )
@@ -21,8 +21,6 @@ makedocs(
 deploydocs(
     repo = "github.com/JuliaReach/BernsteinExpansions.jl.git",
     target = "build",
-    osname = "linux",
-    julia  = "0.6",
     deps = nothing,
     make = nothing
 )
