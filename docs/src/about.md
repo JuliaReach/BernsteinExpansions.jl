@@ -15,7 +15,6 @@ and send your code), add examples to the documentation or propose new features.
 Below some conventions that we follow when contributing
 to this package are detailed. For specific guidelines on documentation, see the [Documentations Guidelines wiki](https://github.com/JuliaReach/LazySets.jl/wiki/Documentation-Guidelines).
 
-
 ### Branches
 
 Each pull request (PR) should be pushed in a new branch with the name of the author
@@ -71,5 +70,5 @@ For further options see the inline help of `benchmarkpkg`.
 
 These persons have contributed to `BernsteinExpansions.jl` (in alphabetic order):
 
-- [Marcelo Forets](http://marcelo-forets.fr)
+- [Marcelo Forets](http://main.marcelo-forets.fr)
 - [Alexandre Rocca](http://www-verimag.imag.fr/~rocca/)
