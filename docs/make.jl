@@ -9,7 +9,8 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
-        "Bernstein expansion" => "man/bernstein_expansion.md",
+        "Introduction" => "man/introduction.md",
+        "Range Enclosure" => "man/range.md",
         "Benchmarks" => "man/benchmarks.md"],
         "Library" => Any[
         "Types" => "lib/types.md",

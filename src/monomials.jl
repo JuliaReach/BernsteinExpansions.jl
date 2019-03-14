@@ -1,5 +1,8 @@
+# temp?
+univariate(k::Int, l::Int, X::Interval{N}) where {N<:AbstractFloat} = univariate(k, l, X.lo, X.hi)
+
 """
-    univariate(k::Int64, l::Int64, low::N, high::N)::Vector{N} where {N<:AbstractFloat}
+    univariate(k::Int, l::Int, low::N, high::N) where {N<:AbstractFloat}
 
 Compute the Bernstein coefficients of a univariate monomial.
 
@@ -12,9 +15,11 @@ Compute the Bernstein coefficients of a univariate monomial.
 
 ### Output
 
-A vector with floating point entries containing the Bernstein coefficients.
+A vector of `l+1` entries, in floating point, containing the Bernstein coefficients
+of this monomial.
 """
-function univariate(k::Int64, l::Int64, low::N, high::N)::Vector{N} where {N<:AbstractFloat}
+function univariate(k::Int, l::Int, low::N, high::N) where {N<:AbstractFloat}
+    #low, high = X.lo, X.hi
     m = l - k
     b = zeros(N, l+1)
     @inbounds @fastmath for i in 0:l
@@ -62,9 +67,16 @@ function univariate(k::Int64, l::Int64, low::Rational, high::Rational)::Vector{R
     return b
 end
 
+# temp?
+function multivariate(k::Vector{Int64}, l::Vector{Int64}, X::IntervalBox{N}) where {N<:Number}
+    l = [vi.lo for vi in b.v]
+    h = [vi.lo for vi in b.v] # TODO : merge in one loop
+    return multivariate(k, l, l, h)
+end
+
 """
     multivariate(k::Vector{Int64}, l::Vector{Int64},
-                          low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
+                 low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
 
 Compute the Bernstein coefficients of a multivariate monomial.
 
