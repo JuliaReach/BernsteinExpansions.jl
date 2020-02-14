@@ -26,4 +26,4 @@ end
 ImplicitBernsteinForm(array::Vector{Vector{N}}, dim::Int, ncoeffs::Int) where {N} =
     ImplicitBernsteinForm(VectorOfArray(array), dim, ncoeffs)
 
-include("monomials.jl")
+

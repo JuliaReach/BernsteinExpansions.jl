@@ -7,7 +7,8 @@ Bernstein coefficients of multivariate polynomials.
 
 ```@contents
 Pages = [
-    "man/bernstein_expansion.md",
+    "man/introduction.md",
+    "man/range.md",
     "man/benchmarks.md"
 ]
 Depth = 2
