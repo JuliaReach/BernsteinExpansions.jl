@@ -1,49 +1,35 @@
-__precompile__(true)
 module BernsteinExpansions
 
-using Compat
-import Compat.String
+using RecursiveArrayTools,
+      MultivariatePolynomials,
+      IntervalArithmetic
 
-using RecursiveArrayTools
+# ===============================================================
+# Bernstein forms
+# ===============================================================
+include("implicit.jl")
+include("tensorial.jl")
 
-import MultivariatePolynomials
-import MultivariatePolynomials: AbstractPolynomialLike
+export ImplicitBernsteinForm
 
-import IntervalArithmetic
-import IntervalArithmetic: Interval, IntervalBox
+# ===============================================================
+# Bernstein expansion of univariate and multivariate monomials
+# ===============================================================
+include("monomials.jl")
 
-# ===========================================================
-# Methods to calculate the Bernstein expansion of univariate 
-# and multivariate monomials
-# ===========================================================
 export univariate,
        multivariate
 
-include("monomials.jl")
-
-# =============================================================
-# Types to represent the Bernstein expansion of polynomials on
-#  hyperrectangular domains
-# =============================================================
-export BernsteinExpansion
-
+# ===============================================================
+# Bernstein expansion of polynomials on hyperrectangular domains
+# ===============================================================
 include("expansion.jl")
 
-# ==============================================================
-# Enclosure methods for polynomials in hyperrectangular domains
-# ==============================================================
-include("enclosures.jl")
+export BernsteinExpansion
 
-# ================================================
-# Types to represent the implicit Bernstein form
-# ================================================
-export ImplicitBernsteinForm
-
-include("implicit.jl")
-
-# ================================================
-# Types to represent the tensorial Bernstein form
-# ================================================
-include("tensorial.jl")
+# ===============================================================
+# Enclosure methods
+# ===============================================================
+#include("enclosures.jl")
 
 end # module
