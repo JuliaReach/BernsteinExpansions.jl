@@ -1,0 +1,22 @@
+name = "BernsteinExpansions"
+uuid = "63cfd3f7-0d6b-5d21-88c7-7d8c45f91d96"
+authors = ["mforets <mforets@gmail.com>"]
+version = "0.1"
+
+[deps]
+IntervalArithmetic = "d1acc4aa-44c8-5952-acd4-ba5d80a2a253"
+MultivariatePolynomials = "102ac46a-7ee4-5c85-9060-abc95bfdeaa3"
+RecursiveArrayTools = "731186ca-8d62-57ce-b412-fbd966d074cd"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+[compat]
+IntervalArithmetic = "0.16"
+MultivariatePolynomials = "0.3"
+RecursiveArrayTools = "2.1"
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
