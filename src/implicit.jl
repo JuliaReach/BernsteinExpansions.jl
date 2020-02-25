@@ -13,17 +13,18 @@ Type defining an implicit Bernstein form.
 
 ### Fields
 
-- `array` -- the vector of vectors holding the Bernstein coefficients
-- `dim`   -- an integer representing the ambient dimension
+- `array`      -- vector of vectors holding the Bernstein coefficients implicitly
+- `dim`        -- an integer representing the ambient dimension
+- `numcoeffs`  -- number of coefficients
 """
 struct ImplicitBernsteinForm{T, N} <: AbstractBernsteinForm{N}
     array::VectorOfArray{T, N}
     dim::Int
-    ncoeffs::Int
+    numcoeffs::Int
 end
 
 # constructor from vector of vectors
-ImplicitBernsteinForm(array::Vector{Vector{N}}, dim::Int, ncoeffs::Int) where {N} =
-    ImplicitBernsteinForm(VectorOfArray(array), dim, ncoeffs)
-
-
+function ImplicitBernsteinForm(array::Vector{<:AbstractVector}, n::Int, numcoeffs::Int)
+    array = VectorOfArray(array)
+    return ImplicitBernsteinForm(array, dim, ncoeffs)
+end

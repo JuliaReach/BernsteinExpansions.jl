@@ -1,27 +1,28 @@
 using Documenter, BernsteinExpansions
 
+DocMeta.setdocmeta!(BernsteinExpansions, :DocTestSetup,
+                   :(using BernsteinExpansions); recursive=true)
+
 makedocs(
-    doctest = true,  # use this flag to skip doctests (saves time!)
-    modules = [BernsteinExpansions],
-    format = Documenter.HTML(),
-    assets = ["assets/juliareach.css"],
+    format = Documenter.HTML(prettyurls=haskey(ENV, "GITHUB_ACTIONS")),
     sitename = "BernsteinExpansions.jl",
+    doctest = false,
+    strict = true,
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
-        "Introduction" => "man/introduction.md",
-        "Range Enclosure" => "man/range.md",
+            "Introduction" => "man/introduction.md",
+            "Range Enclosure" => "man/range.md",
         "Benchmarks" => "man/benchmarks.md"],
         "Library" => Any[
-        "Types" => "lib/types.md",
-        "Methods" => "lib/methods.md"],
+            "Types" => "lib/types.md",
+            "Methods" => "lib/methods.md"],
         "About" => "about.md"
     ]
 )
 
+# Deploy built documentation from Travis.
 deploydocs(
     repo = "github.com/JuliaReach/BernsteinExpansions.jl.git",
-    target = "build",
-    deps = nothing,
-    make = nothing
+    push_preview=true,
 )

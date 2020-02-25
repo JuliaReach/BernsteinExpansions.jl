@@ -1,78 +1,77 @@
-# temp?
-univariate(k::Int, l::Int, X::Interval{N}) where {N<:AbstractFloat} = univariate(k, l, X.lo, X.hi)
+# =============================================
+# Bernstein expansion for univariate monomials
+# =============================================
 
 """
-    univariate(k::Int, l::Int, low::N, high::N) where {N<:AbstractFloat}
+    univariate(m::AbstractMonomialLike, l::Integer, dom::Interval)
 
-Compute the Bernstein coefficients of a univariate monomial.
+Compute the Bernstein coefficients of a univariate monomial over an interval.
 
 ### Input
 
-- `k`    -- degree of the given monomial
+- `m`    -- monomial
 - `l`    -- degree of the Bernstein polynomial
-- `low`  -- the lower bound of the interval where the Bernstein coefficients are computed
-- `high` -- the upper bound of the interval the Bernstein coefficients are computed
+- `dom`  -- domain of the Bernstein expansion
 
 ### Output
 
-A vector of `l+1` entries, in floating point, containing the Bernstein coefficients
-of this monomial.
+An `l+1`-dimensional vector that corresponds to the Bernstein expansion of order
+`l` of the monomial `m`.
+
+### Algorithm
+
+TODO: complete
 """
-function univariate(k::Int, l::Int, low::N, high::N) where {N<:AbstractFloat}
-    #low, high = X.lo, X.hi
-    m = l - k
-    b = zeros(N, l+1)
-    @inbounds @fastmath for i in 0:l
-        if k < l
+function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where {N}
+    nvariables(m) == 1 || throw(ArgumentError("this function only acccepts univariate " *
+        "monomials but the given monomial has $(nvariables(m)) variables"))
+
+    k = degree(m)
+    coeffs = zeros(N, l+1) # zeros(MVector{l+1, N})
+    _univariate!(coeffs, k, l, inf(dom), sup(dom))
+end
+
+# floating-point computation
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer, low::N, high::N) where {N<:AbstractFloat}
+    if k < l
+        m = l-k
+        @inbounds @simd for i in 0:l
+            coeffs[i+1] = zero(N)
             for j in max(0, i-m):min(k, i)
-                aux =  binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
-                b[i+1] += aux * low^(k-j) * high^j
+                aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                coeffs[i+1] += aux * fastpow(low, k-j) * fastpow(high, j)
             end
-        else
-            b[i+1] = low^(k-i) * high^i
+        end
+    else
+        @inbounds @simd for i in 0:l
+            coeffs[i+1] = fastpow(low, k-i) * fastpow(high, i)
         end
     end
-    return b
+    return coeffs
 end
 
-"""
-    univariate(k::Int64, l::Int64, low::Rational, high::Rational)::Vector{Rational}
-
-Compute *exactly* the Bernstein coefficients of a univariate monomial.
-
-### Input
-
-- `k`    -- degree of the given monomial
-- `l`    -- degree of the Bernstein polynomial
-- `low`  -- the lower bound of the interval where the Bernstein coefficients are computed
-- `high` -- the upper bound of the interval the Bernstein coefficients are computed
-
-### Output
-
-A vector with rational entries containing the Bernstein coefficients.
-"""
-function univariate(k::Int64, l::Int64, low::Rational, high::Rational)::Vector{Rational}
-    m = l - k
-    b = zeros(Rational, l+1)
-    @inbounds for i in 0:l
-        if k < l
+# exact computation using rationals
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer, low::N, high::N) where {M, N<:Rational{M}}
+    if k < l
+        m = l-k
+        @inbounds for i in 0:l
+            coeffs[i+1] = zero(N)
             for j in max(0, i-m):min(k, i)
-                aux =  binomial(m, i-j) * binomial(k, j) // binomial(k+m, i)
-                b[i+1] += aux * low^(k-j) * high^j
+                aux = binomial(m, i-j) * binomial(k, j) // binomial(k+m, i)
+                coeffs[i+1] += aux * low^(k-j) * high^j
             end
-        else
-            b[i+1] = low^(k-i) * high^i
+        end
+    else
+        @inbounds @simd for i in 0:l
+            coeffs[i+1] = low^(k-i) * high^i
         end
     end
-    return b
+    return coeffs
 end
 
-# temp?
-function multivariate(k::Vector{Int64}, l::Vector{Int64}, X::IntervalBox{N}) where {N<:Number}
-    l = [vi.lo for vi in b.v]
-    h = [vi.lo for vi in b.v] # TODO : merge in one loop
-    return multivariate(k, l, l, h)
-end
+# ===============================================
+# Bernstein expansion for multivariate monomials
+# ===============================================
 
 """
     multivariate(k::Vector{Int64}, l::Vector{Int64},
@@ -101,11 +100,16 @@ julia> m.array
  [4.0, 8.0, 16.0]
 ```
 """
-function multivariate(k::Vector{Int64}, l::Vector{Int64},
-                      low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
+function multivariate(k::VM, l::VM, X::IntervalBox{N}) where {N, VM<:AbstractVector{Int}}
+    l = [vi.lo for vi in b.v]
+    h = [vi.lo for vi in b.v] # TODO : merge in one loop
+    return _multivariate(k, l, l, h)
+end
+
+function _multivariate(k::VM, l::VM, low::VN, high::VN) where {VM<:AbstractVector{Int}, N, VN<:AbstractVector{N}}
     n = length(low)
     ncoeffs = 1
-    B = Vector{Vector{N}}(undef, n)
+    B = Vector{Vector{N}}(undef, n) # make the same type as the others
     @inbounds for i in 1:n
         @views B[i] = univariate(k[i], l[i], low[i], high[i])
         ncoeffs = ncoeffs * length(B[i])
