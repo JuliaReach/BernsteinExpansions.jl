@@ -1,8 +1,10 @@
 module BernsteinExpansions
 
-using RecursiveArrayTools,
-      MultivariatePolynomials,
-      IntervalArithmetic
+using Reexport,
+      RecursiveArrayTools,
+      MultivariatePolynomials
+
+@reexport using IntervalArithmetic
 
 # ===============================================================
 # Bernstein forms
@@ -15,6 +17,7 @@ export ImplicitBernsteinForm
 # ===============================================================
 # Bernstein expansion of univariate and multivariate monomials
 # ===============================================================
+include("fastpow.jl")
 include("monomials.jl")
 
 export univariate,
