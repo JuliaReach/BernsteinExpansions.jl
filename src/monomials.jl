@@ -20,38 +20,111 @@ An `l+1`-dimensional vector that corresponds to the Bernstein expansion of order
 
 ### Algorithm
 
-TODO: complete
+TODO: add
+
+### Notes
+
+For experimental purposes, different variations of the algorithm are availble
+in the internal function `_univariate!`. By dispatching on any of the following
+values, you can choose between:
+
+- `fastmath` : Uses the `@fastmath`. This is the fastest implementation.
+- `fastpow`  : Uses `fastpow` from `DiffEqBase.jl`. This is the second fastest
+               implementation.
+- `base`     : Uses `^` from Julia. This is the slowest implementation, but it's
+               accuracy is guaranteed to be within an `<= 1 ulp` for all possible
+               input values.
 """
 function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where {N}
     nvariables(m) == 1 || throw(ArgumentError("this function only acccepts univariate " *
         "monomials but the given monomial has $(nvariables(m)) variables"))
 
     k = degree(m)
-    coeffs = zeros(N, l+1) # zeros(MVector{l+1, N})
+    coeffs = Vector{N}(undef, l+1) # preallocate output
     _univariate!(coeffs, k, l, inf(dom), sup(dom))
 end
 
-# floating-point computation
-function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer, low::N, high::N) where {N<:AbstractFloat}
+# fallback
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N) where {N<:AbstractFloat}
+    _univariate!(coeffs, k, l, low, high, Val(:fastmath))
+end
+
+# use @fastmath macro to allow floating point optimizations
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N, ::Val{:fastmath}) where {N<:AbstractFloat}
     if k < l
         m = l-k
-        @inbounds @simd for i in 0:l
-            coeffs[i+1] = zero(N)
-            for j in max(0, i-m):min(k, i)
-                aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
-                coeffs[i+1] += aux * fastpow(low, k-j) * fastpow(high, j)
+        @fastmath @inbounds begin
+             for i in 0:l
+                 coeffs[i+1] = zero(N)
+                 for j in max(0, i-m):min(k, i)
+                     aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                     coeffs[i+1] += aux * low^(k-j) * high^j
+                 end
             end
         end
     else
-        @inbounds @simd for i in 0:l
-            coeffs[i+1] = fastpow(low, k-i) * fastpow(high, i)
+        @fastmath @inbounds begin
+            for i in 0:l
+                coeffs[i+1] = low^(k-i) * high^i
+            end
+        end
+    end
+    return coeffs
+end
+
+# use fastpow version of ^
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N, ::Val{:fastpow}) where {N<:AbstractFloat}
+    if k < l
+        m = l-k
+        @inbounds begin
+             for i in 0:l
+                 coeffs[i+1] = zero(N)
+                 for j in max(0, i-m):min(k, i)
+                     aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                     coeffs[i+1] += aux * fastpow(low, k-j) * fastpow(high, j)
+                 end
+            end
+        end
+    else
+        @fastmath @inbounds begin
+            for i in 0:l
+                coeffs[i+1] = fastpow(low, k-i) * fastpow(high, i)
+            end
+        end
+    end
+    return coeffs
+end
+
+# use Julia base version of ^
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N, ::Val{:base}) where {N<:AbstractFloat}
+    if k < l
+        m = l-k
+        @inbounds begin
+             for i in 0:l
+                 coeffs[i+1] = zero(N)
+                 for j in max(0, i-m):min(k, i)
+                     aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                     coeffs[i+1] += aux * low^(k-j) * high^j
+                 end
+            end
+        end
+    else
+        @inbounds begin
+            for i in 0:l
+                coeffs[i+1] = low^(k-i) * high^i
+            end
         end
     end
     return coeffs
 end
 
 # exact computation using rationals
-function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer, low::N, high::N) where {M, N<:Rational{M}}
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N) where {M, N<:Rational{M}}
     if k < l
         m = l-k
         @inbounds for i in 0:l
