@@ -18,10 +18,6 @@ Compute the Bernstein coefficients of a univariate monomial over an interval.
 An `l+1`-dimensional vector that corresponds to the Bernstein expansion of order
 `l` of the monomial `m`.
 
-### Algorithm
-
-TODO: add
-
 ### Notes
 
 For experimental purposes, different variations of the algorithm are availble
@@ -34,6 +30,10 @@ values, you can choose between:
 - `base`     : Uses `^` from Julia. This is the slowest implementation, but it's
                accuracy is guaranteed to be within an `<= 1 ulp` for all possible
                input values.
+
+### Algorithm
+
+TODO: add algorithm (ref Smith's PhD thesis).            
 """
 function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where {N}
     nvariables(m) == 1 || throw(ArgumentError("this function only acccepts univariate " *
@@ -44,7 +44,15 @@ function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where
     _univariate!(coeffs, k, l, inf(dom), sup(dom))
 end
 
-# fallback
+# Bernstein coefficients for univariate terms like 4x²
+function univariate(t::AbstractTermLike, l::Integer, dom::Interval{N}) where {N}
+    m = monomial(t)
+    α = coefficient(t)
+    coeffs = univariate(m, l, dom)
+    return α .* coeffs
+end
+
+# fallback in floating-point
 function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                       low::N, high::N) where {N<:AbstractFloat}
     _univariate!(coeffs, k, l, low, high, Val(:fastmath))

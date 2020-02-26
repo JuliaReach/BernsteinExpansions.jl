@@ -21,24 +21,17 @@ X = [\bar{x}_1, \overline{x}_1]
 
 ## Example
 
-```@example expansion_example
+```@example univariate
 using DynamicPolynomials
 
 @polyvar x
-p = x^2
 
-bcoeffs(p)
+univariate(x^3, 3, 1..2)
 ```
 
-```@example expansion_example
-using DynamicPolynomials
-
-@polyvar x
-p = 2x^2
-
-bcoeffs(p)
+```@example univariate
+univariate(2x^3, 3, 1..2)
 ```
-
 
 
 ## References
