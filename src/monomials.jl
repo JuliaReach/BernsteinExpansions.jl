@@ -9,9 +9,9 @@ Compute the Bernstein coefficients of a univariate monomial over an interval.
 
 ### Input
 
-- `m`    -- monomial
+- `m`    -- monomial in one variable
 - `l`    -- degree of the Bernstein polynomial
-- `dom`  -- domain of the Bernstein expansion
+- `dom`  -- interval domain of the Bernstein expansion
 
 ### Output
 
@@ -33,7 +33,7 @@ values, you can choose between:
 
 ### Algorithm
 
-TODO: add algorithm (ref Smith's PhD thesis).            
+TODO: add description (ref Smith's PhD thesis).
 """
 function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where {N}
     nvariables(m) == 1 || throw(ArgumentError("this function only acccepts univariate " *
@@ -44,7 +44,7 @@ function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where
     _univariate!(coeffs, k, l, inf(dom), sup(dom))
 end
 
-# Bernstein coefficients for univariate terms like 4x²
+# Bernstein coefficients for univariate terms like 4x²; uses linearity property
 function univariate(t::AbstractTermLike, l::Integer, dom::Interval{N}) where {N}
     m = monomial(t)
     α = coefficient(t)
@@ -155,45 +155,68 @@ end
 # ===============================================
 
 """
-    multivariate(k::Vector{Int64}, l::Vector{Int64},
-                 low::Vector{N}, high::Vector{N})::ImplicitBernsteinForm{N} where {N<:Number}
+    multivariate(m::AbstractMonomialLike, l::AbstractVector{Int}, dom::IntervalBox{N}) where {N}
 
 Compute the Bernstein coefficients of a multivariate monomial.
 
 ### Input
 
-- `k`    -- vector of degrees for each monomial
-- `l`    -- vector of degrees of the Bernstein polynomial for each monomial
-- `low`  -- the lower bounds of the interval where the Bernstein coefficients are computed
-- `high` -- the upper bounds of the interval the Bernstein coefficients are computed
+- `m`    -- monomial in several variables
+- `l`    -- vector of degrees of the Bernstein polynomial for each variable
+- `dom`  -- multi-dimensional interval domain of the Bernstein expansion
 
 ### Output
 
-A Bernstein implicit form holding the Bernstein coefficients.
+A vector of vectors holding the Bernstein coefficients implicitly.
 
-### Examples
+### Algorithm
 
-```julia
-julia> m = multivariate([3,2],[3,2],[1.0,2],[2,4.0]);
-julia> m.array
-2-element Array{Array{Float64,1},1}:
- [1.0, 2.0, 4.0, 8.0]
- [4.0, 8.0, 16.0]
+TODO: add description (ref Smith's PhD thesis).
 ```
 """
-function multivariate(k::VM, l::VM, X::IntervalBox{N}) where {N, VM<:AbstractVector{Int}}
-    l = [vi.lo for vi in b.v]
-    h = [vi.lo for vi in b.v] # TODO : merge in one loop
-    return _multivariate(k, l, l, h)
+function multivariate(m::AbstractMonomialLike, l::AbstractVector{Int}, dom::IntervalBox{D, N}) where {D, N}
+    n = nvariables(m)
+    (n == length(l) == D) || throw(ArgumentError("the number of " *
+        "variables in the monomial `m`, number of degrees `l` and domain size of `dom` " *
+        "do no match; they are $n, $(length(l)) and $D respectively"))
+
+    k = exponents(m) # vector of degrees for each variable
+
+    # preallocate outputs
+    coeffs = Vector{Vector{N}}(undef, n)
+    @inbounds for i in 1:n
+        coeffs[i] = Vector{N}(undef, l[i] + 1)
+    end
+
+    @inbounds for i in 1:n
+        _univariate!(coeffs[i], k[i], l[i], inf(dom[i]), sup(dom[i]))
+    end
+    return coeffs
 end
 
-function _multivariate(k::VM, l::VM, low::VN, high::VN) where {VM<:AbstractVector{Int}, N, VN<:AbstractVector{N}}
-    n = length(low)
-    ncoeffs = 1
-    B = Vector{Vector{N}}(undef, n) # make the same type as the others
-    @inbounds for i in 1:n
-        @views B[i] = univariate(k[i], l[i], low[i], high[i])
-        ncoeffs = ncoeffs * length(B[i])
-    end
-    return ImplicitBernsteinForm(B, n, ncoeffs)
+# Bernstein coefficients for multivariate terms like 4x²y; uses linearity property
+function multivariate(t::AbstractTermLike, l::AbstractVector{Int}, dom::IntervalBox)
+    m = monomial(t)
+    α = coefficient(t)
+    coeffs = multivariate(m, l, dom)
+    return α .* coeffs
 end
+
+function assemble(array::Vector{VN}) where {N, VN<:AbstractVector{N}}
+    n = length(array)
+    if n == 1
+        return hcat(first(array))
+    elseif n == 2
+        return array[1] * array[2]'
+    else
+        error("not implemented yet")
+    end
+    # preallocate grid ...
+end
+
+#=
+# mutating versions
+function _assemble!(..)
+    ...
+end
+=#
