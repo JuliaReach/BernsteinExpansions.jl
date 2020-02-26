@@ -48,7 +48,7 @@ end
 function univariate(t::AbstractTermLike, l::Integer, dom::Interval{N}) where {N}
     m = monomial(t)
     α = coefficient(t)
-    coeffs = univariate(monomial(m), l, dom)
+    coeffs = univariate(m, l, dom)
     return α .* coeffs
 end
 
