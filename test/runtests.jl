@@ -31,19 +31,5 @@ end
     @test _univariate!(coeffs, 1, 5, 0//1, 1//1) == [0//1, 1//5, 2//5, 3//5, 4//5, 1//1]
 end
 
-#=
-@testset "Multivariate monomial in 2D, float input, full expansion" begin
-    k = [3, 2]
-    l = [3, 2]
-    dom = IntervalBox([1, 2], [2, 4])
-    ans = [4.0, 8.0, 16.0, 8.0, 16.0, 32.0, 16.0, 32.0, 64.0, 32.0, 64.0, 128.0]
-
-    # test nested tensor (default) algorithm
-    m = multivariate(k, l, dom)
-    @test generate_tensor_form(m, algorithm="linear_kron") == sol
-
-    #FIXME: Look how to explore multi-dim array in correct fashion
-    m_reverse = multivariate(reverse(k), reverse(l), reverse(low), reverse(high));
-    @test vcat(generate_tensor_form(m_reverse, algorithm="tensor_generated")...) == sol
-end
-=#
+# TODO: add tests for multivariate (ref Smith's thesis)
+# 
