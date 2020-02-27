@@ -21,7 +21,6 @@ makedocs(
     ]
 )
 
-# Deploy built documentation from Travis.
 deploydocs(
     repo = "github.com/JuliaReach/BernsteinExpansions.jl.git",
     push_preview=true,
