@@ -55,7 +55,7 @@ end
 # fallback in floating-point
 function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                       low::N, high::N) where {N<:AbstractFloat}
-    _univariate!(coeffs, k, l, low, high, Val(:fastmath))
+    _univariate!(coeffs, k, l, low, high, Val(:optimized))
 end
 
 # use @fastmath macro to allow floating point optimizations
@@ -68,6 +68,30 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                  coeffs[i+1] = zero(N)
                  for j in max(0, i-m):min(k, i)
                      aux = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                     coeffs[i+1] += aux * low^(k-j) * high^j
+                 end
+            end
+        end
+    else
+        @fastmath @inbounds begin
+            for i in 0:l
+                coeffs[i+1] = low^(k-i) * high^i
+            end
+        end
+    end
+    return coeffs
+end
+
+# use @fastmath macro to allow floating point optimizations
+function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
+                      low::N, high::N, ::Val{:optimized}) where {N<:AbstractFloat}
+    if k < l
+        m = l-k
+        @fastmath @inbounds begin
+             for i in 0:l
+                 coeffs[i+1] = zero(N)
+                 for j in max(0, i-m):min(k, i)
+                     aux = BINOM_QUOT_TABLE[m, i, j, k]
                      coeffs[i+1] += aux * low^(k-j) * high^j
                  end
             end
@@ -150,6 +174,24 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
     return coeffs
 end
 
+
+function _binomial_quotients(; N=Float64, m_max=10, i_max=10, j_max=10, k_max=10)
+    M = Array{N, 4}(undef, m_max, i_max, j_max, k_max)
+    for k in 1:k_max
+        for j in 1:j_max
+            for i in 1:i_max
+                for m in 1:m_max
+                    @inbounds M[m, i, j, k] = binomial(m, i-j) * binomial(k, j) / binomial(k+m, i)
+                end
+            end
+        end
+    end
+    return M
+end
+
+# lookup table for the binomial quotients in the univariate case with k < l
+const BINOM_QUOT_TABLE = _binomial_quotients()
+
 # ===============================================
 # Bernstein expansion for multivariate monomials
 # ===============================================
@@ -201,22 +243,3 @@ function multivariate(t::AbstractTermLike, l::AbstractVector{Int}, dom::Interval
     coeffs = multivariate(m, l, dom)
     return α .* coeffs
 end
-
-function assemble(array::Vector{VN}) where {N, VN<:AbstractVector{N}}
-    n = length(array)
-    if n == 1
-        return hcat(first(array))
-    elseif n == 2
-        return array[1] * array[2]'
-    else
-        error("not implemented yet")
-    end
-    # preallocate grid ...
-end
-
-#=
-# mutating versions
-function _assemble!(..)
-    ...
-end
-=#

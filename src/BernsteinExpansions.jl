@@ -5,34 +5,25 @@ using Reexport,
       MultivariatePolynomials
 
 @reexport using IntervalArithmetic
+const IntervalOrIntervalBox = Union{Interval, IntervalBox}
 
-# ===============================================================
-# Bernstein forms
-# ===============================================================
-include("implicit.jl")
-include("tensorial.jl")
-
-export ImplicitBernsteinForm
-
-# ===============================================================
-# Bernstein expansion of univariate and multivariate monomials
-# ===============================================================
+# Bernstein coefficients of univariate and multivariate monomials
 include("fastpow.jl")
 include("monomials.jl")
 
 export univariate,
        multivariate
 
-# ===============================================================
 # Bernstein expansion of polynomials on hyperrectangular domains
-# ===============================================================
-include("expansion.jl")
+include("forms.jl")
+include("implicit.jl")
+include("full.jl")
 
-export BernsteinExpansion
+export ImplicitBernsteinForm,
+       ExplicitBernsteinForm,
+       FullBernsteinForm
 
-# ===============================================================
-# Enclosure methods
-# ===============================================================
-#include("enclosures.jl")
+# Range enclosure methods
+include("enclosures.jl")
 
 end # module
