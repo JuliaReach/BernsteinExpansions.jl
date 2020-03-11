@@ -55,7 +55,7 @@ end
 # fallback in floating-point
 function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                       low::N, high::N) where {N<:AbstractFloat}
-    _univariate!(coeffs, k, l, low, high, Val(:optimized))
+    _univariate!(coeffs, k, l, low, high, Val(:fastmath)) # :optimized
 end
 
 # use @fastmath macro to allow floating point optimizations
@@ -174,7 +174,7 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
     return coeffs
 end
 
-
+# TODO: handle zeros in i, j, k, m (?)
 function _binomial_quotients(; N=Float64, m_max=10, i_max=10, j_max=10, k_max=10)
     M = Array{N, 4}(undef, m_max, i_max, j_max, k_max)
     for k in 1:k_max

@@ -33,12 +33,14 @@ function ImplicitBernsteinForm(pol::PT, dom::Interval, args...) where {T, PT<:Ab
     ImplicitBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
+#=
 # constructor from
-function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
+function ImplicitBernsteinForm(pol::PT, dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
 
 
 end
+=#
 
 function getcoeff(bf::ImplicitBernsteinForm, ids::NTuple{D, Int}) where {D}
     return prod(bf.coeffs[k, i] for (i, k) in enumerate(ids))

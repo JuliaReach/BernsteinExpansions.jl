@@ -19,7 +19,7 @@ hyperrectangular domain.
 ### Examples
 """
 struct FullBernsteinForm{T, PT<:AbstractPolynomialLike{T},
-                         D, N, MC} <: AbstractBernsteinForm{T}
+                         D, N, MC, VD<:AbstractVector{Int}} <: AbstractBernsteinForm{T}
     pol::PT
     dom::IntervalBox{D, N}
     numvars::Int
@@ -33,10 +33,11 @@ function FullBernsteinForm(pol::PT, dom::Interval, args...) where {T, PT<:Abstra
     FullBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
+#=
 # constructor from
-function FullBernsteinForm(pol::PT,
-                           dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
+function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
-  
+
 
 end
+=#
