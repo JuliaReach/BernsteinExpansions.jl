@@ -11,7 +11,7 @@ Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
 DynamicPolynomials = "0.3"
-IntervalArithmetic = "0.15, 0.16"
+IntervalArithmetic = "0.15, 0.16, 0.17"
 MultivariatePolynomials = "0.3"
 RecursiveArrayTools = "2.1"
 Reexport = "0.2"
