@@ -9,6 +9,8 @@
 `BernsteinExpansions.jl` is a [Julia](http://julialang.org) package to compute
 Bernstein coefficients of multivariate polynomials.
 
+## :warning: NOTE: This library is currently unmaintained
+
 ## Resources
 
 - [Manual](http://juliareach.github.io/BernsteinExpansions.jl/latest/)
