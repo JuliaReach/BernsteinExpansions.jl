@@ -7,7 +7,7 @@ makedocs(
     format = Documenter.HTML(prettyurls=haskey(ENV, "GITHUB_ACTIONS")),
     sitename = "BernsteinExpansions.jl",
     doctest = false,
-    strict = true,
+    strict = false,
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
