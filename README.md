@@ -16,13 +16,6 @@ Bernstein coefficients of multivariate polynomials.
 
 ## Installing
 
-### Dependencies
-
-This package requires Julia v0.6 or later. Refer to the official documentation
-on how to install it for your system.
-
-### Installation
-
 To install this package, execute the following command inside Julia's REPL:
 
 ```julia
