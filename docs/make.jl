@@ -7,7 +7,7 @@ makedocs(
     format = Documenter.HTML(prettyurls=haskey(ENV, "GITHUB_ACTIONS")),
     sitename = "BernsteinExpansions.jl",
     doctest = false,
-    strict = true,
+    strict = false,
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
@@ -23,5 +23,5 @@ makedocs(
 
 deploydocs(
     repo = "github.com/JuliaReach/BernsteinExpansions.jl.git",
-    push_preview=true,
+    push_preview=false,
 )
