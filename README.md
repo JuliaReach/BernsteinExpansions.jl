@@ -1,6 +1,6 @@
 # BernsteinExpansions.jl
 
-[![Build Status](https://travis-ci.org/JuliaReach/BernsteinExpansions.jl.svg?branch=master)](https://travis-ci.org/JuliaReach/BernsteinExpansions.jl)
+[![Build Status](https://github.com/JuliaReach/BernsteinExpansions.jl/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/JuliaReach/BernsteinExpansions.jl/actions/workflows/ci.yml?query=branch%3Amaster)
 [![Docs latest](https://img.shields.io/badge/docs-latest-blue.svg)](http://juliareach.github.io/BernsteinExpansions.jl/latest/)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/JuliaReach/BernsteinExpansions.jl/blob/master/LICENSE.md)
 [![Code coverage](http://codecov.io/github/JuliaReach/BernsteinExpansions.jl/coverage.svg?branch=master)](https://codecov.io/github/JuliaReach/BernsteinExpansions.jl?branch=master)
