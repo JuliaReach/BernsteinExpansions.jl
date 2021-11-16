@@ -35,7 +35,6 @@ jobs:
       - name: Install dependencies
         run: |
           julia --project --color=yes -e 'using Pkg;
-              include(joinpath("deps", "build_private.jl"));
               Pkg.build(verbose=true)'
         shell: bash
       - name: Build
