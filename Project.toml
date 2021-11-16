@@ -1,6 +1,5 @@
 name = "BernsteinExpansions"
 uuid = "63cfd3f7-0d6b-5d21-88c7-7d8c45f91d96"
-authors = ["mforets <mforets@gmail.com>"]
 version = "0.1"
 
 [deps]
