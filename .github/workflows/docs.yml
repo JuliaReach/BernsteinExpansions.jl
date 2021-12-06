@@ -3,7 +3,7 @@ name: Documentation
 on:
   push:
     paths-ignore:
-      - 'LICENSE.md'
+      - 'LICENSE'
       - 'README.md'
     branches:
       - master
