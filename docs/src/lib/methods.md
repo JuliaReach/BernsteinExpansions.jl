@@ -23,14 +23,3 @@ monomials.
 univariate
 multivariate
 ```
-
-## Tensorial Form
-
-Functions to compute the tensorial Bernstein form of univariate and multivariate
-monomials.
-
-```@docs
-generate_tensor_form
-multivariate_tensor
-_tensor_generated!
-```

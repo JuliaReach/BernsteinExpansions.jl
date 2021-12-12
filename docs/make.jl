@@ -8,8 +8,8 @@ makedocs(
         prettyurls = get(ENV, "CI", nothing) == "true",
         assets = ["assets/aligned.css"]),
     sitename = "BernsteinExpansions.jl",
-    doctest = false,
-    strict = false,
+    doctest = true,
+    strict = true,
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
