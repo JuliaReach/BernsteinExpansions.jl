@@ -4,10 +4,12 @@ DocMeta.setdocmeta!(BernsteinExpansions, :DocTestSetup,
                    :(using BernsteinExpansions); recursive=true)
 
 makedocs(
-    format = Documenter.HTML(prettyurls=haskey(ENV, "GITHUB_ACTIONS")),
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true",
+        assets = ["assets/aligned.css"]),
     sitename = "BernsteinExpansions.jl",
-    doctest = false,
-    strict = false,
+    doctest = true,
+    strict = true,
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
@@ -23,5 +25,5 @@ makedocs(
 
 deploydocs(
     repo = "github.com/JuliaReach/BernsteinExpansions.jl.git",
-    push_preview=false,
+    push_preview=true
 )
