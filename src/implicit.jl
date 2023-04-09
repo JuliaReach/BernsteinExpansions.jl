@@ -29,13 +29,13 @@ struct ImplicitBernsteinForm{T, PT<:AbstractPolynomialLike{T},
 end
 
 # univariate case is not special cased
-function ImplicitBernsteinForm(pol::PT, dom::Interval, args...) where {T, PT<:AbstractPolynomialLike}
+function ImplicitBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:AbstractPolynomialLike}
     ImplicitBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
 #=
 # constructor from
-function ImplicitBernsteinForm(pol::PT, dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
+function ImplicitBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
 
 

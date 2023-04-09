@@ -29,13 +29,13 @@ struct FullBernsteinForm{T, PT<:AbstractPolynomialLike{T},
 end
 
 # univariate case is not special cased
-function FullBernsteinForm(pol::PT, dom::Interval, args...) where {T, PT<:AbstractPolynomialLike}
+function FullBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:AbstractPolynomialLike}
     FullBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
 #=
 # constructor from
-function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {T, PT<:AbstractPolynomialLike}
+function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
 
 
