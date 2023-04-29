@@ -27,9 +27,9 @@ The DiffEqBase.jl package is licensed under the MIT "Expat" License:
 # https://tech.ebayinc.com/engineering/fast-approximate-logarithms-part-iii-the-formulas/
 @inline function fastlog2(x::Float32)::Float32
     # (x-1)*(a*(x-1) + b)/((x-1) + c) (line 8 of table 2)
-    a =   0.338953f0
-    b =   2.198599f0
-    c =   1.523692f0
+    a = 0.338953f0
+    b = 2.198599f0
+    c = 1.523692f0
     #
     # Assume IEEE representation, which is sgn(1):exp(8):frac(23)
     # representing (1+frac)*2^(exp-127)  Call 1+frac the significand
@@ -44,15 +44,15 @@ The DiffEqBase.jl package is licensed under the MIT "Expat" License:
     if greater !== 0x00000000
         ux2i = (ux1i & 0x007FFFFF) | 0x3f000000
         signif = reinterpret(Float32, ux2i)
-        fexp = exp - 126f0    # 126 instead of 127 compensates for division by 2
+        fexp = exp - 126.0f0    # 126 instead of 127 compensates for division by 2
         signif = signif - 1.0f0
     else
         ux2i = (ux1i & 0x007FFFFF) | 0x3f800000
         signif = reinterpret(Float32, ux2i)
-        fexp = exp - 127f0
+        fexp = exp - 127.0f0
         signif = signif - 1.0f0
     end
-    lg2 = fexp + signif*(a*signif + b)/(signif + c)
+    lg2 = fexp + signif * (a * signif + b) / (signif + c)
     return lg2
 end
 
@@ -98,7 +98,7 @@ const EXP2FT = (Float32(0x1.6a09e667f3bcdp-1),
     twopk = Float32(reinterpret(Float64, UInt64(0x3ff00000 + k) << 32))
 
     # Compute r = exp2(y) = exp2ft[i0] * p(z).
-    tv = EXP2FT[i0+1]
+    tv = EXP2FT[i0 + 1]
     u = tv * z
     tv = tv + u * (P1 + z * P2) + u * (z * z) * (P3 + z * P4)
 
@@ -112,14 +112,14 @@ end
 @inline function fastpow(x::Real, y::Real)
     if iszero(x)
         if iszero(y) # fix for 0^0 := 1
-            return 1f0
+            return 1.0f0
         else
-            return 0f0
+            return 0.0f0
         end
     elseif isinf(x) && isinf(y)
         return Float32(Inf)
     else
-        return _exp2(convert(Float32,y) * fastlog2(convert(Float32, x)))
+        return _exp2(convert(Float32, y) * fastlog2(convert(Float32, x)))
     end
 end
 @inline fastpow(x, y) = x^y

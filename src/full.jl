@@ -18,10 +18,10 @@ hyperrectangular domain.
 
 ### Examples
 """
-struct FullBernsteinForm{T, PT<:AbstractPolynomialLike{T},
-                         D, N, MC, VD<:AbstractVector{Int}} <: AbstractBernsteinForm{T}
+struct FullBernsteinForm{T,PT<:AbstractPolynomialLike{T},
+                         D,N,MC,VD<:AbstractVector{Int}} <: AbstractBernsteinForm{T}
     pol::PT
-    dom::IntervalBox{D, N}
+    dom::IntervalBox{D,N}
     numvars::Int
     coeffs::MC
     numcoeffs::Int
@@ -30,14 +30,13 @@ end
 
 # univariate case is not special cased
 function FullBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:AbstractPolynomialLike}
-    FullBernsteinForm(pol, IntervalBox(dom), args...)
+    return FullBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
 #=
 # constructor from
 function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
-
 
 end
 =#
