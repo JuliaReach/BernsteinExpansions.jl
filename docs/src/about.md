@@ -33,7 +33,7 @@ we also build on the nightly branch.
 
 To run the unit tests locally, you should do:
 
-```julia
+```bash
 $ julia --color=yes test/runtests.jl
 ```
 
@@ -43,7 +43,7 @@ This documentation is written in Markdown, and it relies on
 [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl) to produce the HTML
 layout. To build the docs, run `make.jl`:
 
-```julia
+```bash
 $ julia --color=yes docs/make.jl
 ```
 
