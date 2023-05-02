@@ -24,18 +24,21 @@ lookup, e.g. `t/mforets/7`.
 
 ### Unit testing and continuous integration (CI)
 
-This project is synchronized with Travis CI, such that each PR gets tested
+This project is synchronized with GitHub Actions such that each PR gets tested
 before merging (and the build is automatically triggered after each new commit).
+For the maintainability of this project, it is important to make all unit tests
+pass.
 
-For the maintainability of this project, we try to understand and fix the failing
-doctests if they exist. We develop in Julia v0.6.0, but for experimentation
-we also build on the nightly branch.
+To run the unit tests locally, you can do:
 
-To run the unit tests locally, you should do:
+```julia
+julia> using Pkg
 
-```bash
-$ julia --color=yes test/runtests.jl
+julia> Pkg.test("BernsteinExpansions")
 ```
+
+We also advise adding new unit tests when adding new features to ensure
+long-term support of your contributions.
 
 ### Contributing to the documentation
 
