@@ -61,4 +61,4 @@ Return the coefficient of the Bernstein expansion corresponding to the tuple `id
 
 ### Output
 """
-function getcoeff(::AbstractBernsteinForm, ids::NTuple{D, Int}) where {D} end
+function getcoeff(::AbstractBernsteinForm, ids::NTuple{D,Int}) where {D} end

@@ -18,19 +18,19 @@ domain.
 
 ### Examples
 """
-struct ImplicitBernsteinForm{T, PT<:AbstractPolynomialLike{T},
-                             D, N, TC, NC, SC, VD<:AbstractVector{Int}} <: AbstractBernsteinForm{T}
+struct ImplicitBernsteinForm{T,PT<:AbstractPolynomialLike{T},
+                             D,N,TC,NC,SC,VD<:AbstractVector{Int}} <: AbstractBernsteinForm{T}
     pol::PT
-    dom::IntervalBox{D, N}
+    dom::IntervalBox{D,N}
     numvars::Int
-    coeffs::VectorOfArray{TC, NC, SC}
+    coeffs::VectorOfArray{TC,NC,SC}
     numcoeffs::Int
     degs::VD
 end
 
 # univariate case is not special cased
 function ImplicitBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:AbstractPolynomialLike}
-    ImplicitBernsteinForm(pol, IntervalBox(dom), args...)
+    return ImplicitBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
 #=
@@ -38,15 +38,14 @@ end
 function ImplicitBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}
     numvars = nvariables(pol)
 
-
 end
 =#
 
-function getcoeff(bf::ImplicitBernsteinForm, ids::NTuple{D, Int}) where {D}
+function getcoeff(bf::ImplicitBernsteinForm, ids::NTuple{D,Int}) where {D}
     return prod(bf.coeffs[k, i] for (i, k) in enumerate(ids))
 end
 
-function assemble(array::Vector{VN}) where {N, VN<:AbstractVector{N}}
+function assemble(array::Vector{VN}) where {N,VN<:AbstractVector{N}}
     n = length(array)
     if n == 1
         return hcat(first(array))

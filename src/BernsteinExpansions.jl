@@ -5,7 +5,7 @@ using Reexport,
       MultivariatePolynomials
 
 @reexport using IntervalArithmetic
-const IntervalOrIntervalBox = Union{Interval, IntervalBox}
+const IntervalOrIntervalBox = Union{Interval,IntervalBox}
 
 # Bernstein coefficients of univariate and multivariate monomials
 include("fastpow.jl")
