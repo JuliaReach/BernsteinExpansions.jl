@@ -28,5 +28,5 @@ Bernstein coefficients of multivariate polynomials.
 To install this package, execute the following command inside Julia's REPL:
 
 ```julia
-] add git@github.com:JuliaReach/BernsteinExpansions.jl
+julia> import Pkg; Pkg.add(url="git@github.com:JuliaReach/BernsteinExpansions.jl")
 ```
