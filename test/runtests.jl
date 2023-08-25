@@ -21,8 +21,8 @@ end
 
 @testset "Univariate monomial, rational" begin
     # exported function
-    @test univariate(x^3, 3, Interval(1 // 1, 2 // 1)) == [1 // 1, 2 // 1, 4 // 1, 8 // 1]
-    @test univariate(x, 5, Interval(0 // 1, 1 // 1)) ==
+    @test univariate(x^3, 3, interval(1 // 1, 2 // 1)) == [1 // 1, 2 // 1, 4 // 1, 8 // 1]
+    @test univariate(x, 5, interval(0 // 1, 1 // 1)) ==
           [0 // 1, 1 // 5, 2 // 5, 3 // 5, 4 // 5, 1 // 1]
 
     # internals
