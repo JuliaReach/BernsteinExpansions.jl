@@ -4,11 +4,11 @@ DocMeta.setdocmeta!(BernsteinExpansions, :DocTestSetup,
                     :(using BernsteinExpansions); recursive=true)
 
 makedocs(;
+         sitename="BernsteinExpansions.jl",
          format=Documenter.HTML(; prettyurls=get(ENV, "CI", nothing) == "true",
                                 assets=["assets/aligned.css"]),
-         sitename="BernsteinExpansions.jl",
          doctest=true,
-         strict=true,
+         pagesonly=true,
          pages=["Home" => "index.md",
                 "Manual" => Any["Introduction" => "man/introduction.md",
                                 "Range Enclosure" => "man/range.md",
