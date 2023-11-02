@@ -20,7 +20,7 @@ An `l+1`-dimensional vector that corresponds to the Bernstein expansion of order
 
 ### Notes
 
-For experimental purposes, different variations of the algorithm are availble
+For experimental purposes, different variations of the algorithm are available
 in the internal function `_univariate!`. By dispatching on any of the following
 values, you can choose between:
 
@@ -36,7 +36,7 @@ values, you can choose between:
 TODO: add description (ref Smith's PhD thesis).
 """
 function univariate(m::AbstractMonomialLike, l::Integer, dom::Interval{N}) where {N}
-    nvariables(m) == 1 || throw(ArgumentError("this function only acccepts univariate " *
+    nvariables(m) == 1 || throw(ArgumentError("this function only accepts univariate " *
                                               "monomials but the given monomial has $(nvariables(m)) variables"))
 
     k = degree(m)
