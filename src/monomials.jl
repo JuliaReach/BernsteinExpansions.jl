@@ -239,7 +239,8 @@ function multivariate(m::AbstractMonomialLike, l::AbstractVector{Int},
 end
 
 # Bernstein coefficients for multivariate terms like 4x²y; uses linearity property
-function multivariate(t::AbstractTermLike, l::AbstractVector{Int}, dom::IntervalBox)
+function multivariate(t::AbstractTermLike, l::AbstractVector{Int},
+                      dom::IntervalBox{D,N}) where {D,N}
     m = monomial(t)
     α = coefficient(t)
     coeffs = multivariate(m, l, dom)
