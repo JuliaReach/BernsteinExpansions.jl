@@ -35,3 +35,5 @@ end
 
 # TODO: add tests for multivariate (ref Smith's thesis)
 #
+
+include("Aqua.jl")

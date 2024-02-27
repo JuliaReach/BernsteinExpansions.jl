@@ -20,7 +20,6 @@ include("implicit.jl")
 include("full.jl")
 
 export ImplicitBernsteinForm,
-       ExplicitBernsteinForm,
        FullBernsteinForm
 
 # Range enclosure methods
