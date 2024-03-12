@@ -11,18 +11,17 @@ const IntervalOrIntervalBox = Union{Interval,IntervalBox}
 include("fastpow.jl")
 include("monomials.jl")
 
-export univariate,
-       multivariate
-
 # Bernstein expansion of polynomials on hyperrectangular domains
 include("forms.jl")
 include("implicit.jl")
 include("full.jl")
 
-export ImplicitBernsteinForm,
-       FullBernsteinForm
-
 # Range enclosure methods
 include("enclosures.jl")
+
+export univariate,
+       multivariate,
+       ImplicitBernsteinForm,
+       FullBernsteinForm
 
 end # module
