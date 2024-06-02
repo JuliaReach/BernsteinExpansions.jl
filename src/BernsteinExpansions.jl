@@ -1,8 +1,9 @@
 module BernsteinExpansions
 
-using Reexport,
-      RecursiveArrayTools,
-      MultivariatePolynomials
+using Reexport
+using RecursiveArrayTools: VectorOfArray
+using MultivariatePolynomials: AbstractMonomialLike, AbstractTermLike, AbstractPolynomialLike,
+                               nvariables, degree, monomial, coefficient
 
 @reexport using IntervalArithmetic
 const IntervalOrIntervalBox = Union{Interval,IntervalBox}
