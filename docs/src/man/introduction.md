@@ -40,15 +40,6 @@ univariate(x^3, 3, 1..2)
 univariate(2x^3, 3, 1..2)
 ```
 
-
 ## References
 
-[1] Smith, A. P. *Fast construction of constant bound functions for sparse
-    polynomials.* [Journal of Global Optimization 43.2 (2009): 445-458](https://link.springer.com/article/10.1007/s10898-007-9195-4).
-
-[2] Smith, A. P. *Enclosure methods for systems of polynomial equations and
-    inequalities*. [Doctoral dissertation, Universität Konstanz (2012)](https://d-nb.info/1028327854/34).
-
-[3] Titi, J., & Garloff, J. (2017). *Fast determination of the tensorial and
-    simplicial Bernstein forms of multivariate polynomials and rational functions.*
-    [Konstanzer Schriften in Mathematik; 361](http://kops.uni-konstanz.de/handle/123456789/39178).
+[Smith09, Smith12, TitiG17](@citet)
