@@ -6,6 +6,7 @@ using MultivariatePolynomials: AbstractMonomialLike, AbstractTermLike, AbstractP
                                nvariables, degree, monomial, coefficient
 
 @reexport using IntervalArithmetic
+using IntervalBoxes: IntervalBox
 const IntervalOrIntervalBox = Union{Interval,IntervalBox}
 
 # Bernstein coefficients of univariate and multivariate monomials
@@ -24,5 +25,6 @@ export univariate,
        multivariate,
        ImplicitBernsteinForm,
        FullBernsteinForm
+export IntervalBox
 
 end # module
