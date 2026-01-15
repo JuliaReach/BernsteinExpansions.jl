@@ -1,6 +1,6 @@
 module BernsteinExpansions
 
-using Reexport
+using Reexport: @reexport
 using RecursiveArrayTools: VectorOfArray
 using MultivariatePolynomials: AbstractMonomialLike, AbstractTermLike, AbstractPolynomialLike,
                                nvariables, degree, monomial, coefficient

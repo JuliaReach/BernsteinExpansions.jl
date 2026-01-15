@@ -1,10 +1,16 @@
 [deps]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 DynamicPolynomials = "7c1d4256-1411-5781-91ec-d7bc3513ac07"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 Aqua = "0.8.9"
 DynamicPolynomials = "0.4 - 0.6"
+ExplicitImports = "1"
+Pkg = "<0.0.1, 1.5"
 StaticArrays = "1.2"
+
+[extras]
+ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
