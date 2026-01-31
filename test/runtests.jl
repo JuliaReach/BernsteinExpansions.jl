@@ -9,8 +9,8 @@ using BernsteinExpansions: _univariate! #, _multivariate!
 
 @testset "Univariate monomial, floating point" begin
     # exported function
-    @test univariate(x^3, 3, 1 .. 2) == [1.0, 2.0, 4.0, 8.0]
-    @test univariate(x, 5, 0 .. 1) == [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+    @test univariate(x^3, 3, interval(1, 2)) == [1.0, 2.0, 4.0, 8.0]
+    @test univariate(x, 5, interval(0, 1)) == [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 
     # internals
     coeffs = zeros(MVector{4,Float64})
