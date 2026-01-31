@@ -33,11 +33,11 @@ using BernsteinExpansions, DynamicPolynomials
 
 @polyvar x
 
-univariate(x^3, 3, 1..2)
+univariate(x^3, 3, interval(1, 2))
 ```
 
 ```@example univariate
-univariate(2x^3, 3, 1..2)
+univariate(2x^3, 3, interval(1, 2))
 ```
 
 ## References
