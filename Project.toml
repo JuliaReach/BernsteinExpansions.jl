@@ -1,16 +1,18 @@
 name = "BernsteinExpansions"
 uuid = "63cfd3f7-0d6b-5d21-88c7-7d8c45f91d96"
-version = "0.1"
+version = "0.1.0"
 
 [deps]
 IntervalArithmetic = "d1acc4aa-44c8-5952-acd4-ba5d80a2a253"
+IntervalBoxes = "43d83c95-ebbb-40ec-8188-24586a1458ed"
 MultivariatePolynomials = "102ac46a-7ee4-5c85-9060-abc95bfdeaa3"
 RecursiveArrayTools = "731186ca-8d62-57ce-b412-fbd966d074cd"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
-IntervalArithmetic = "0.20 - 0.21, =0.21.2"  # v0.22 removed IntervalBox
+IntervalArithmetic = "0.22 - 1"
+IntervalBoxes = "0.2 - 0.3"
 MultivariatePolynomials = "0.4 - 0.5"
 RecursiveArrayTools = "2 - 3"
 Reexport = "1.2"
-julia = "1.5"
+julia = "1.10"
