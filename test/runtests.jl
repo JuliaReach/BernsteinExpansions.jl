@@ -33,7 +33,25 @@ end
           [0 // 1, 1 // 5, 2 // 5, 3 // 5, 4 // 5, 1 // 1]
 end
 
-# TODO: add tests for multivariate (ref Smith's thesis)
+@testset "Multivariate monomial, rational" begin
+    box = IntervalBox(interval(1 // 1, 2 // 1), interval(1 // 1, 2 // 1))
+
+    # exported function
+    @test multivariate(x^2 * y^3, [2, 3], box) == [[1 // 1, 2 // 1, 4 // 1],
+                                                    [1 // 1, 2 // 1, 4 // 1, 8 // 1]]
+
+    # linearity property: the coefficient is applied exactly once overall, not
+    # once per variable
+    @test multivariate(3 * x^2 * y^3, [2, 3], box) == [[3 // 1, 6 // 1, 12 // 1],
+                                                        [1 // 1, 2 // 1, 4 // 1, 8 // 1]]
+end
+
+@testset "Multivariate monomial, floating point" begin
+    box = IntervalBox(interval(0.0, 1.0), interval(0.0, 1.0))
+    @test multivariate(x * y, [1, 1], box) == [[0.0, 1.0], [0.0, 1.0]]
+end
+
+# TODO: add more tests for multivariate (ref Smith's thesis)
 #
 
 include("quality_assurance.jl")

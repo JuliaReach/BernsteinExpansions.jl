@@ -33,6 +33,12 @@ function FullBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:AbstractP
     return FullBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
+numvars(bf::FullBernsteinForm) = bf.numvars
+
+polynomial(bf::FullBernsteinForm) = bf.pol
+
+domain(bf::FullBernsteinForm) = bf.dom
+
 #=
 # constructor from
 function FullBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}
