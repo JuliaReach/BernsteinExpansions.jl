@@ -33,12 +33,6 @@ function ImplicitBernsteinForm(pol::PT, dom::Interval, args...) where {PT<:Abstr
     return ImplicitBernsteinForm(pol, IntervalBox(dom), args...)
 end
 
-numvars(bf::ImplicitBernsteinForm) = bf.numvars
-
-polynomial(bf::ImplicitBernsteinForm) = bf.pol
-
-domain(bf::ImplicitBernsteinForm) = bf.dom
-
 #=
 # constructor from
 function ImplicitBernsteinForm(pol::PT, dom::IntervalBox, args...) where {PT<:AbstractPolynomialLike}

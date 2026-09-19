@@ -31,7 +31,7 @@ Return the number of variables of the given Bernstein form.
 
 The number of variables of the polynomial represented by `bf`.
 """
-function numvars(::AbstractBernsteinForm) end
+numvars(bf::AbstractBernsteinForm) = bf.numvars
 
 """
     polynomial(::AbstractBernsteinForm)
@@ -46,7 +46,7 @@ Return the polynomial represented by the given Bernstein form.
 
 The polynomial associated to `bf`.
 """
-function polynomial(::AbstractBernsteinForm) end
+polynomial(bf::AbstractBernsteinForm) = bf.pol
 
 """
     domain(::AbstractBernsteinForm)
@@ -61,7 +61,25 @@ Return the domain over which the given Bernstein form was computed.
 
 The hyperrectangular domain of `bf`, of type `IntervalOrIntervalBox`.
 """
-function domain(::AbstractBernsteinForm) end
+domain(bf::AbstractBernsteinForm) = bf.dom
+
+"""
+    enclose(bf::AbstractBernsteinForm)
+
+Compute a range enclosure of the polynomial represented by `bf` over its own
+domain, `domain(bf)`.
+
+### Input
+
+- `bf` -- Bernstein form
+
+### Output
+
+An interval (or interval box) that is guaranteed to contain `polynomial(bf)(x)`
+for every `x` in `domain(bf)` — the minimum and maximum Bernstein coefficients
+of `bf` bound the range of the polynomial.
+"""
+enclose(bf::AbstractBernsteinForm) = enclose(bf, domain(bf))
 
 """
     enclose(::AbstractBernsteinForm, ::IntervalOrIntervalBox)
