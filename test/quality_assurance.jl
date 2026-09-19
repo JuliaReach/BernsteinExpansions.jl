@@ -9,5 +9,7 @@ import Aqua, ExplicitImports
 end
 
 @testset "Aqua tests" begin
-    Aqua.test_all(BernsteinExpansions)
+    # Aqua, DynamicPolynomials, ExplicitImports, StaticArrays are only used in the test suite
+    test_only_deps = [:Aqua, :DynamicPolynomials, :ExplicitImports, :StaticArrays]
+    Aqua.test_all(BernsteinExpansions; stale_deps=(ignore=test_only_deps,))
 end
