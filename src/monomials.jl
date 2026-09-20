@@ -169,10 +169,20 @@ end
 # `binomial(m, i-j-1) / binomial(m, i-j) = (i - j) / (m - (i - j) + 1)`. This turns the
 # O(k) cost of the naive `binomial(...)` calls at every step into an O(1) update
 # (see [S09] section 3.1). The running term is kept as an exact `Rational` and only
-# converted to `Float64` when stored, so the result matches (bit for bit) what
-# directly evaluating `binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)` would
-# give -- the incremental update only saves redundant work, it does not change the
-# floating-point rounding behavior.
+# converted to `Float64` once, when stored, so each quotient is a correctly-rounded
+# Float64. This is at least as accurate as directly evaluating
+# `binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)` under `@fastmath` (which
+# is not guaranteed to be correctly rounded), but the two are not guaranteed to agree
+# bit for bit: they can differ by a handful of ULP per quotient. Values fed through the
+# `k < l` branch of `_univariate!` can still differ from before by more than that,
+# since the final sum is a weighted combination of `low^(k-j) * high^j` terms that can
+# be many orders of magnitude larger than the result for wide or negative domains at
+# high degree, so per-quotient ULP-level differences get amplified by the resulting
+# catastrophic cancellation -- a pre-existing conditioning issue of this summation, not
+# something introduced by caching. Verified numerically (not covered by the test suite,
+# whose (k, l) are too small to exercise this): for (k, l) up to (20, 60) across several
+# domains, both formulations track the exact (Rational-computed) coefficient about
+# equally well on average, with no systematic accuracy loss from this change.
 function _binomial_quotients_row(k::Integer, m::Integer)
     l = k + m
     rows = Vector{Vector{Float64}}(undef, l + 1)
