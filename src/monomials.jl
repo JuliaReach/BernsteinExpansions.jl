@@ -24,7 +24,9 @@ For experimental purposes, different variations of the algorithm are available
 in the internal function `_univariate!`. By dispatching on any of the following
 values, you can choose between:
 
-- `fastmath` : Uses the `@fastmath`. This is the fastest implementation.
+- `fastmath` : Uses the `@fastmath`. This is the fastest implementation. The
+               binomial quotients that only depend on `k` and `l` (not on the
+               domain) are cached across calls; see `_binomial_quotients_cached`.
 - `fastpow`  : Uses the package's own `fastpow` (vendored from `DiffEqBase.jl`,
                see `fastpow.jl`). This is the second fastest implementation.
 - `base`     : Uses `^` from Julia. This is the slowest implementation, but it's
@@ -58,17 +60,21 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
     return _univariate!(coeffs, k, l, low, high, Val(:fastmath))
 end
 
-# use @fastmath macro to allow floating point optimizations
+# use @fastmath macro to allow floating point optimizations; the binomial
+# quotients (which only depend on k and m = l - k, not on the domain) are
+# cached across calls, see `_binomial_quotients_cached`
 function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                       low::N, high::N, ::Val{:fastmath}) where {N<:AbstractFloat}
     if k < l
         m = l - k
+        quotients = _binomial_quotients_cached(k, m)
         @fastmath @inbounds begin
             for i in 0:l
+                jmin = max(0, i - m)
+                row = quotients[i + 1]
                 coeffs[i + 1] = zero(N)
-                for j in max(0, i - m):min(k, i)
-                    aux = binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)
-                    coeffs[i + 1] += aux * low^(k - j) * high^j
+                for (idx, j) in enumerate(jmin:min(k, i))
+                    coeffs[i + 1] += row[idx] * low^(k - j) * high^j
                 end
             end
         end
@@ -148,6 +154,50 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
         end
     end
     return coeffs
+end
+
+# Compute the binomial quotients `binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)`
+# for every `i in 0:(k + m)` and `j in max(0, i - m):min(k, i)`, returned as a vector
+# of rows (one per `i`), each row indexed from `j = max(0, i - m)`.
+#
+# Instead of recomputing three `binomial(...)` calls for every `(i, j)` pair, each row
+# is filled incrementally: for fixed `i`, the ratio of consecutive terms is
+#
+#   term(j + 1) / term(j) = (k - j) / (j + 1) * (i - j) / (m - i + j + 1)
+#
+# which follows from `binomial(k, j+1) / binomial(k, j) = (k - j) / (j + 1)` and
+# `binomial(m, i-j-1) / binomial(m, i-j) = (i - j) / (m - (i - j) + 1)`. This turns the
+# O(k) cost of the naive `binomial(...)` calls at every step into an O(1) update
+# (see [S09] section 3.1). The running term is kept as an exact `Rational` and only
+# converted to `Float64` when stored, so the result matches (bit for bit) what
+# directly evaluating `binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)` would
+# give -- the incremental update only saves redundant work, it does not change the
+# floating-point rounding behavior.
+function _binomial_quotients_row(k::Integer, m::Integer)
+    l = k + m
+    rows = Vector{Vector{Float64}}(undef, l + 1)
+    @inbounds for i in 0:l
+        jmin = max(0, i - m)
+        jmax = min(k, i)
+        row = Vector{Float64}(undef, jmax - jmin + 1)
+        term = (binomial(m, i - jmin) * binomial(k, jmin)) // binomial(k + m, i)
+        row[1] = Float64(term)
+        for j in jmin:(jmax - 1)
+            term *= (k - j) // (j + 1) * ((i - j) // (m - i + j + 1))
+            row[j - jmin + 2] = Float64(term)
+        end
+        rows[i + 1] = row
+    end
+    return rows
+end
+
+# cache of binomial quotient rows (see `_binomial_quotients_row`), indexed by `(k, m)`,
+# so that repeated Bernstein expansions of the same degree over different domains do
+# not recompute them
+const BINOM_QUOT_CACHE = Dict{Tuple{Int,Int},Vector{Vector{Float64}}}()
+
+function _binomial_quotients_cached(k::Integer, m::Integer)
+    return get!(() -> _binomial_quotients_row(k, m), BINOM_QUOT_CACHE, (k, m))
 end
 
 # ===============================================
