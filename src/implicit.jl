@@ -45,6 +45,28 @@ function getcoeff(bf::ImplicitBernsteinForm, ids::NTuple{D,Int}) where {D}
     return prod(bf.coeffs[k, i] for (i, k) in enumerate(ids))
 end
 
+"""
+    assemble(array::Vector{VN}) where {N, VN<:AbstractVector{N}}
+
+Assemble the implicit (per-variable) Bernstein coefficients of an
+`ImplicitBernsteinForm` into the full multi-dimensional array of coefficients,
+i.e. the outer product of the given vectors.
+
+### Input
+
+- `array` -- vector of per-variable coefficient vectors
+
+### Output
+
+The multi-dimensional array whose entry at index `ids` equals
+`prod(array[i][ids[i]] for i in eachindex(array))`.
+
+### Notes
+
+Currently only implemented for one or two variables (`length(array) <= 2`).
+
+TODO: generalize to an arbitrary number of variables.
+"""
 function assemble(array::Vector{VN}) where {N,VN<:AbstractVector{N}}
     n = length(array)
     if n == 1
@@ -54,7 +76,6 @@ function assemble(array::Vector{VN}) where {N,VN<:AbstractVector{N}}
     else
         error("not implemented yet")
     end
-    # preallocate grid ...
 end
 
 #=

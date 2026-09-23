@@ -25,8 +25,8 @@ in the internal function `_univariate!`. By dispatching on any of the following
 values, you can choose between:
 
 - `fastmath` : Uses the `@fastmath`. This is the fastest implementation.
-- `fastpow`  : Uses `fastpow` from `DiffEqBase.jl`. This is the second fastest
-               implementation.
+- `fastpow`  : Uses the package's own `fastpow` (vendored from `DiffEqBase.jl`,
+               see `fastpow.jl`). This is the second fastest implementation.
 - `base`     : Uses `^` from Julia. This is the slowest implementation, but it's
                accuracy is guaranteed to be within an `<= 1 ulp` for all possible
                input values.
@@ -55,7 +55,7 @@ end
 # fallback in floating-point
 function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                       low::N, high::N) where {N<:AbstractFloat}
-    return _univariate!(coeffs, k, l, low, high, Val(:fastmath)) # :optimized
+    return _univariate!(coeffs, k, l, low, high, Val(:fastmath))
 end
 
 # use @fastmath macro to allow floating point optimizations
@@ -68,30 +68,6 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
                 coeffs[i + 1] = zero(N)
                 for j in max(0, i - m):min(k, i)
                     aux = binomial(m, i - j) * binomial(k, j) / binomial(k + m, i)
-                    coeffs[i + 1] += aux * low^(k - j) * high^j
-                end
-            end
-        end
-    else
-        @fastmath @inbounds begin
-            for i in 0:l
-                coeffs[i + 1] = low^(k - i) * high^i
-            end
-        end
-    end
-    return coeffs
-end
-
-# use @fastmath macro to allow floating point optimizations
-function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
-                      low::N, high::N, ::Val{:optimized}) where {N<:AbstractFloat}
-    if k < l
-        m = l - k
-        @fastmath @inbounds begin
-            for i in 0:l
-                coeffs[i + 1] = zero(N)
-                for j in max(0, i - m):min(k, i)
-                    aux = BINOM_QUOT_TABLE[m, i, j, k]
                     coeffs[i + 1] += aux * low^(k - j) * high^j
                 end
             end
@@ -174,25 +150,6 @@ function _univariate!(coeffs::AbstractVector{N}, k::Integer, l::Integer,
     return coeffs
 end
 
-# TODO: handle zeros in i, j, k, m (?)
-function _binomial_quotients(; N=Float64, m_max=10, i_max=10, j_max=10, k_max=10)
-    M = Array{N,4}(undef, m_max, i_max, j_max, k_max)
-    for k in 1:k_max
-        for j in 1:j_max
-            for i in 1:i_max
-                for m in 1:m_max
-                    @inbounds M[m, i, j, k] = binomial(m, i - j) * binomial(k, j) /
-                                              binomial(k + m, i)
-                end
-            end
-        end
-    end
-    return M
-end
-
-# lookup table for the binomial quotients in the univariate case with k < l
-const BINOM_QUOT_TABLE = _binomial_quotients()
-
 # ===============================================
 # Bernstein expansion for multivariate monomials
 # ===============================================
@@ -215,7 +172,6 @@ A vector of vectors holding the Bernstein coefficients implicitly.
 ### Algorithm
 
 TODO: add description (ref Smith's PhD thesis).
-```
 """
 function multivariate(m::AbstractMonomialLike, l::AbstractVector{Int},
                       dom::IntervalBox{D,N}) where {D,N}
@@ -239,10 +195,16 @@ function multivariate(m::AbstractMonomialLike, l::AbstractVector{Int},
 end
 
 # Bernstein coefficients for multivariate terms like 4x²y; uses linearity property
+#
+# The coefficient α is folded into the first variable's coefficient vector only:
+# since the assembled coefficient at a multi-index `ids` is the product
+# `prod(coeffs[i][ids[i]] for i)`, scaling every per-variable vector by α would
+# apply the factor once per variable instead of once overall.
 function multivariate(t::AbstractTermLike, l::AbstractVector{Int},
                       dom::IntervalBox{D,N}) where {D,N}
     m = monomial(t)
     α = coefficient(t)
     coeffs = multivariate(m, l, dom)
-    return α .* coeffs
+    coeffs[1] = α .* coeffs[1]
+    return coeffs
 end

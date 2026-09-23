@@ -22,18 +22,14 @@ and the axis-aligned hyperrectangular set ``X``.
 
 Range enclosure using Bernstein expansion is to compute a tight outer approximation
 for ``p(X)``, the range of ``p`` over ``X``. Such bounds can be determined by using
-the coefficients of the expansion of the given polynomial into Bernstein polynomials.
-
-TODO: add property
+the coefficients ``b_i`` of the expansion of the given polynomial into Bernstein
+polynomials, since
 
 ```math
-    \min_{i} b_i ≤ p(x) ≤ \max b_i.
+    \min_{i} b_i ≤ p(x) ≤ \max_i b_i \qquad \text{for all } x \in X.
 ```
 
 ## Examples
 
-```@example range_example
-using BernsteinExpansions, DynamicPolynomials
-
-@polyvar x y
-```
+TODO: add a worked example once `enclose` is implemented (see
+[forms.jl](https://github.com/JuliaReach/BernsteinExpansions.jl/blob/master/src/forms.jl)).

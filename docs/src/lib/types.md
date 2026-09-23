@@ -19,4 +19,15 @@ end
 ```@docs
 AbstractBernsteinForm
 ImplicitBernsteinForm
+FullBernsteinForm
+```
+
+## Interface functions
+
+```@docs
+numvars
+polynomial
+domain
+enclose
+getcoeff
 ```
