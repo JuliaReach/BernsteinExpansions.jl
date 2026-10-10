@@ -3,7 +3,7 @@ module BernsteinExpansions
 using Reexport: @reexport
 using RecursiveArrayTools: VectorOfArray
 using MultivariatePolynomials: AbstractMonomialLike, AbstractTermLike, AbstractPolynomialLike,
-                               nvariables, degree, monomial, coefficient
+                               nvariables, degree, monomial, coefficient, exponents
 
 @reexport using IntervalArithmetic
 using IntervalBoxes: IntervalBox
@@ -17,9 +17,6 @@ include("monomials.jl")
 include("forms.jl")
 include("implicit.jl")
 include("full.jl")
-
-# Range enclosure methods
-include("enclosures.jl")
 
 export univariate,
        multivariate,

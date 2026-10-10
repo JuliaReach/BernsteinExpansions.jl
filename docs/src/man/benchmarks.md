@@ -14,13 +14,13 @@ To run the benchmarks, execute:
 
 ```
 julia> using PkgBenchmark
-julia> results = benchmarkpkg("LazySets")
+julia> results = benchmarkpkg("BernsteinExpansions")
 ```
 
 To compare current version to another tagged version, commit or branch:
 
 ```
-julia> results = judge("LazySets", <tagged-version-or-branch>)
+julia> results = judge("BernsteinExpansions", <tagged-version-or-branch>)
 ```
 
 To export the benchmark results to a Markdown file:

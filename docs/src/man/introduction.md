@@ -21,9 +21,10 @@ Consider a polynomial in ``n`` variables, ``x_1, \ldots, x_n`` expressed in its 
 where we use the multi-index notation. The degree of ``p`` is ``l = (l_1, \ldots, l_n)``,
 ``0 ≤ l_i < \infty`` for all ``i = 1, \ldots, n``.
 
-Box
+The Bernstein expansion is computed over an axis-aligned hyperrectangular domain
+(a box)
 ```math
-X = [\bar{x}_1, \overline{x}_1]
+X = [\underline{x}_1, \overline{x}_1] \times \cdots \times [\underline{x}_n, \overline{x}_n].
 ```
 
 ## Example
