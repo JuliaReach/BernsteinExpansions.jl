@@ -1,5 +1,5 @@
 using BernsteinExpansions, Test
-import Aqua, ExplicitImports
+import Aqua, ExplicitImports, JET
 
 @testset "ExplicitImports tests" begin
     # related to reexporting IntervalArithmetic
@@ -8,8 +8,13 @@ import Aqua, ExplicitImports
                                           no_implicit_imports=(ignore=ignores_no_implicit_imports,))
 end
 
+@testset "JET tests" begin
+    # false positives for Base functionality with JET v0.9 (none with v0.12, untested with intermediate versions)
+    JET.test_package(BernsteinExpansions; target_modules=(BernsteinExpansions,))
+end
+
 @testset "Aqua tests" begin
-    # Aqua, DynamicPolynomials, ExplicitImports, StaticArrays are only used in the test suite
-    test_only_deps = [:Aqua, :DynamicPolynomials, :ExplicitImports, :StaticArrays]
+    # some libraries are only used in the test suite
+    test_only_deps = [:Aqua, :DynamicPolynomials, :ExplicitImports, :JET, :StaticArrays]
     Aqua.test_all(BernsteinExpansions; stale_deps=(ignore=test_only_deps,))
 end
