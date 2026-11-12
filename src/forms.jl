@@ -15,7 +15,7 @@ julia> subtypes(AbstractBernsteinForm)
 """
 abstract type AbstractBernsteinForm{T} end
 
-"""
+@doc """
     numvars(::AbstractBernsteinForm)
 
 Return the number of variables of the given Bernstein form.
@@ -24,9 +24,9 @@ Return the number of variables of the given Bernstein form.
 
 ### Output
 """
-function numvars(::AbstractBernsteinForm) end
+numvars(::AbstractBernsteinForm)
 
-"""
+@doc """
     polynomial(::AbstractBernsteinForm)
 
 Return the polynomial represented by the given Bernstein form.
@@ -36,23 +36,23 @@ Return the polynomial represented by the given Bernstein form.
 ### Output
 
 """
-function polynomial(::AbstractBernsteinForm) end
+polynomial(::AbstractBernsteinForm)
 
-"""
+@doc """
     domain(::AbstractBernsteinForm)
 """
-function domain(::AbstractBernsteinForm) end
+domain(::AbstractBernsteinForm)
 
-"""
+@doc """
     enclose(::AbstractBernsteinForm, ::IntervalOrIntervalBox)
 
 ### Input
 
 ### Output
 """
-function enclose(::AbstractBernsteinForm, ::IntervalOrIntervalBox) end
+enclose(::AbstractBernsteinForm, ::IntervalOrIntervalBox)
 
-"""
+@doc """
     getcoeff(::AbstractBernsteinForm, ids::NTuple{D, Int}) where {D}
 
 Return the coefficient of the Bernstein expansion corresponding to the tuple `ids`.
@@ -61,4 +61,4 @@ Return the coefficient of the Bernstein expansion corresponding to the tuple `id
 
 ### Output
 """
-function getcoeff(::AbstractBernsteinForm, ids::NTuple{D,Int}) where {D} end
+getcoeff(::AbstractBernsteinForm, ids::NTuple{D,Int}) where {D}
