@@ -2,8 +2,9 @@ module BernsteinExpansions
 
 using Reexport: @reexport
 using RecursiveArrayTools: VectorOfArray
-using MultivariatePolynomials: AbstractMonomialLike, AbstractTermLike, AbstractPolynomialLike,
-                               nvariables, degree, monomial, coefficient, exponents
+using MultivariatePolynomials: AbstractMonomialLike, AbstractPolynomialLike, AbstractTermLike,
+                               coefficient, coefficient_type, degree, exponents, monomial,
+                               nvariables
 
 @reexport using IntervalArithmetic
 using IntervalBoxes: IntervalBox

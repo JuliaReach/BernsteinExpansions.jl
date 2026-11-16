@@ -26,6 +26,13 @@ struct ImplicitBernsteinForm{T,PT<:AbstractPolynomialLike{T},
     coeffs::VectorOfArray{TC,NC,SC}
     numcoeffs::Int
     degs::VD
+
+    function ImplicitBernsteinForm(pol::PT, dom::IntervalBox{D,N}, numvars::Int,
+                                   coeffs::VectorOfArray{TC,NC,SC}, numcoeffs::Int, degs::VD
+                                  ) where {PT<:AbstractPolynomialLike,D,N,TC,NC,SC,VD<:AbstractVector{Int}}
+        T = coefficient_type(PT)
+        return new{T,PT,D,N,TC,NC,SC,VD}(pol, dom, numvars, coeffs, numcoeffs, degs)
+    end
 end
 
 # univariate case is not special cased
