@@ -26,6 +26,13 @@ struct FullBernsteinForm{T,PT<:AbstractPolynomialLike{T},
     coeffs::MC
     numcoeffs::Int
     degs::VD
+
+    function FullBernsteinForm(pol::PT, dom::IntervalBox{D,N}, numvars::Int,
+                               coeffs::MC, numcoeffs::Int, degs::VD
+                              ) where {PT<:AbstractPolynomialLike,D,N,MC,VD<:AbstractVector{Int}}
+        T = coefficient_type(PT)
+        return new{T,PT,D,N,MC,VD}(pol, dom, numvars, coeffs, numcoeffs, degs)
+    end
 end
 
 # univariate case is not special cased
